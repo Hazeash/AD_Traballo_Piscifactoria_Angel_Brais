@@ -34,10 +34,18 @@ public abstract class Pez {
         adulto = false;
         fertil = false;
     }
+    public void mostrarInformacion() {
+        System.out.println("--------------- " + nombreComun + " ---------------");
+        System.out.println("Edad: " + edad + " días");
+        System.out.println("Sexo: " + (sexo == 'H' ? "Hembra" : "Macho"));
+        System.out.println("Vivo: " + (vivo ? "Sí" : "No"));
+        System.out.println("Alimentado: " + (alimentado ? "Sí" : "No"));
+        System.out.println("Adulto: " + (adulto ? "Sí" : "No"));
+        System.out.println("Fértil: " + (fertil ? "Sí" : "No"));
+    }
     @Override
     public String toString() {
         // Devuelve una representación de cadena de la información relevante del pez
-        // Puedes personalizar esta representación según tus necesidades
         return "Nombre común: " + nombreComun + "\n" +
                "Nombre científico: " + nombreCientifico + "\n" +
                "Edad: " + edad + " días" + "\n" +
@@ -76,7 +84,7 @@ public abstract class Pez {
     }
 
 
-    public boolean isVivo() {
+    public boolean estaVivo() {
         return vivo;
     }
 
@@ -86,7 +94,7 @@ public abstract class Pez {
     }
 
 
-    public boolean isAlimentado() {
+    public boolean haSidoAlimentado() {
         return alimentado;
     }
 
@@ -96,7 +104,7 @@ public abstract class Pez {
     }
 
 
-    public boolean isAdulto() {
+    public boolean esAdulto() {
         return adulto;
     }
 
@@ -106,7 +114,7 @@ public abstract class Pez {
     }
 
 
-    public boolean isFertil() {
+    public boolean esFertil() {
         return fertil;
     }
 

@@ -123,4 +123,3 @@ public abstract class Pez {
         this.fertil = fertil;
     }    
 }
-

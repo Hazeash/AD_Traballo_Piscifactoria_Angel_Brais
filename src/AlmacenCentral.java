@@ -1,7 +1,6 @@
 public class AlmacenCentral {
     private int capacidad;
 
-    
     public AlmacenCentral() {
         this.capacidad = 200;
     }

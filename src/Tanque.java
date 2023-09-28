@@ -12,7 +12,7 @@ public class Tanque {
         this.peces = new ArrayList<>();
     }
 
-    public void showStatus() {
+    public int[] showStatus() {
         int ocupacion = peces.size();
         double porcentajeOcupado = (ocupacion * 100.0) / capacidadMaxima;
         int vivos = 0;
@@ -41,6 +41,7 @@ public class Tanque {
                 }
             }
         }
+        int[] arrDatosTanque ={ocupacion,vivos,alimentados,adultos,hembras,machos,fertiles};
 
         System.out.println("=============== Tanque " + numeroTanque + " ===============");
         System.out.println("Ocupación: " + ocupacion + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
@@ -49,6 +50,7 @@ public class Tanque {
         System.out.println("Peces adultos: " + adultos + " / " + vivos + " (" + ((adultos * 100.0) / vivos) + "%)");
         System.out.println("Hembras / Machos: " + hembras + "/" + machos);
         System.out.println("Fértiles: " + fertiles + " / " + vivos);
+        return arrDatosTanque;
     }
 
     public void showFishStatus() {
@@ -68,5 +70,29 @@ public class Tanque {
             pez.grow();
         }
         // Realizar aquí el proceso de reproducción según tus reglas específicas
+    }
+
+    public int getNumeroTanque() {
+        return numeroTanque;
+    }
+
+    public void setNumeroTanque(int numeroTanque) {
+        this.numeroTanque = numeroTanque;
+    }
+
+    public int getCapacidadMaxima() {
+        return capacidadMaxima;
+    }
+
+    public void setCapacidadMaxima(int capacidadMaxima) {
+        this.capacidadMaxima = capacidadMaxima;
+    }
+
+    public List<Pez> getPeces() {
+        return peces;
+    }
+
+    public void setPeces(List<Pez> peces) {
+        this.peces = peces;
     }
 }

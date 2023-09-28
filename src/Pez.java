@@ -1,22 +1,22 @@
-public abstract class Pez {
-    private String nombreComun;
-    private String nombreCientifico;
+public abstract class Pez implements IPezMar, IPezRio {
+    private final String nombreComun;
+    private final String nombreCientifico;
     private int edad;
     private char sexo;
+    private boolean fertil;
     private boolean vivo;
     private boolean alimentado;
     private boolean adulto;
-    private boolean fertil;
 
     public Pez(String nombreComun, String nombreCientifico, char sexo) {
         this.nombreComun = nombreComun;
         this.nombreCientifico = nombreCientifico;
         this.edad = 0;
         this.sexo = sexo;
+        this.fertil = false;
         this.vivo = true;
         this.alimentado = false;
         this.adulto = false;
-        this.fertil = false;
     }
 
     

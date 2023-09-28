@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tanque {
-    private int numeroTanque;
-    private int capacidadMaxima;
+    private final int numeroTanque;
+    private final int capacidadMaxima;
     private List<Pez> peces;
 
     public Tanque(int numeroTanque, int capacidadMaxima) {

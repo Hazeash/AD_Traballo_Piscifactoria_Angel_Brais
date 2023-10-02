@@ -1,6 +1,11 @@
+package logica;
+
+import logica.IPezMar;
+import logica.IPezRio;
+import propiedades.PecesDatos;
+
 public abstract class Pez implements IPezMar, IPezRio {
-    private final String nombreComun;
-    private final String nombreCientifico;
+
     private int edad;
     private char sexo;
     private boolean fertil;
@@ -8,9 +13,9 @@ public abstract class Pez implements IPezMar, IPezRio {
     private boolean alimentado;
     private boolean adulto;
 
-    public Pez(String nombreComun, String nombreCientifico, char sexo) {
-        this.nombreComun = nombreComun;
-        this.nombreCientifico = nombreCientifico;
+    private PecesDatos pecesDatos;
+
+    public Pez(PecesDatos datos, char sexo) {
         this.edad = 0;
         this.sexo = sexo;
         this.fertil = false;
@@ -19,7 +24,6 @@ public abstract class Pez implements IPezMar, IPezRio {
         this.adulto = false;
     }
 
-    
     // Método para hacer crecer un día al pez
     public void grow() {
         if (vivo) {
@@ -35,7 +39,7 @@ public abstract class Pez implements IPezMar, IPezRio {
         fertil = false;
     }
     public void mostrarInformacion() {
-        System.out.println("--------------- " + nombreComun + " ---------------");
+        System.out.println("--------------- " + pecesDatos.getNombre() + " ---------------");
         System.out.println("Edad: " + edad + " días");
         System.out.println("Sexo: " + (sexo == 'H' ? "Hembra" : "Macho"));
         System.out.println("Vivo: " + (vivo ? "Sí" : "No"));
@@ -46,23 +50,14 @@ public abstract class Pez implements IPezMar, IPezRio {
     @Override
     public String toString() {
         // Devuelve una representación de cadena de la información relevante del pez
-        return "Nombre común: " + nombreComun + "\n" +
-               "Nombre científico: " + nombreCientifico + "\n" +
+        return "Nombre común: " + pecesDatos.getNombre() + "\n" +
+               "Nombre científico: " + pecesDatos.getCientifico() + "\n" +
                "Edad: " + edad + " días" + "\n" +
                "Sexo: " + sexo + "\n" +
                "Vivo: " + (vivo ? "Sí" : "No") + "\n" +
                "Alimentado: " + (alimentado ? "Sí" : "No") + "\n" +
                "Adulto: " + (adulto ? "Sí" : "No") + "\n" +
                "Fértil: " + (fertil ? "Sí" : "No");
-    }
-
-
-    public String getNombreComun() {
-        return nombreComun;
-    }
-
-    public String getNombreCientifico() {
-        return nombreCientifico;
     }
 
     public int getEdad() {

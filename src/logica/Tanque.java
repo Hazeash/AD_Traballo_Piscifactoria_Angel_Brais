@@ -1,3 +1,7 @@
+package logica;
+
+import logica.Pez;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +47,7 @@ public class Tanque {
         }
         int[] arrDatosTanque ={ocupacion,vivos,alimentados,adultos,hembras,machos,fertiles};
 
-        System.out.println("=============== Tanque " + numeroTanque + " ===============");
+        System.out.println("=============== logica.Tanque " + numeroTanque + " ===============");
         System.out.println("Ocupación: " + ocupacion + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
         System.out.println("Peces vivos: " + vivos + " / " + ocupacion + " (" + ((vivos * 100.0) / ocupacion) + "%)");
         System.out.println("Peces alimentados: " + alimentados + " / " + vivos + " (" + ((alimentados * 100.0) / vivos) + "%)");
@@ -62,7 +66,7 @@ public class Tanque {
     public void showCapacity() {
         int ocupacion = peces.size();
         double porcentajeOcupado = (ocupacion * 100.0) / capacidadMaxima;
-        System.out.println("Tanque #" + numeroTanque + " de la piscifactoría al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " peces/" + capacidadMaxima + "]");
+        System.out.println("logica.Tanque #" + numeroTanque + " de la piscifactoría al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " peces/" + capacidadMaxima + "]");
     }
 
     public void nextDay() {
@@ -76,16 +80,8 @@ public class Tanque {
         return numeroTanque;
     }
 
-    public void setNumeroTanque(int numeroTanque) {
-        this.numeroTanque = numeroTanque;
-    }
-
     public int getCapacidadMaxima() {
         return capacidadMaxima;
-    }
-
-    public void setCapacidadMaxima(int capacidadMaxima) {
-        this.capacidadMaxima = capacidadMaxima;
     }
 
     public List<Pez> getPeces() {

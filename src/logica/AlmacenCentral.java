@@ -1,3 +1,5 @@
+package logica;
+
 public class AlmacenCentral {
     private int capacidad;
 

@@ -1,5 +1,6 @@
-import propiedades.AlmacenPropiedades;
-import propiedades.PecesDatos;
+package simulacion;
+
+import logica.Piscifactoria;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,10 +9,11 @@ public class Simulador {
 
     /** Prueba de Javadoc */
     private int dia;
-    private ArrayList<Object> arrPisRio;
-    private ArrayList<Object> arrPisMar;
+    private ArrayList<Piscifactoria> arrPisRio = new ArrayList<>();
+    private ArrayList<Piscifactoria> arrPisMar = new ArrayList<>();
     private String nombreEmpresa;
     private static final Scanner scanner = new Scanner(System.in);
+    private static Cartera cartera;
 
     public Simulador() {
     }
@@ -20,9 +22,11 @@ public class Simulador {
 
         try {
 
+            cartera = new Cartera(100);
             System.out.print("¿Como se va a llamar tu empresa?: ");
             String dato = scanner.nextLine();
-
+            arrPisRio.add(new Piscifactoria(dato,25,25));
+            arrPisRio.get(0).addTank(25);
             dia = 0;
             nombreEmpresa = dato;
 
@@ -63,18 +67,22 @@ public class Simulador {
                 switch (opcion) {
                     case 1:
                         System.out.println("Has seleccionado la Opción 1");
+                        showGeneralStatus();
                         break;
                     case 2:
                         System.out.println("Has seleccionado la Opción 2");
+                        menuPisc();
                         break;
                     case 3:
                         System.out.println("Has seleccionado la Opción 3");
+                        showTankStatus();
                         break;
                     case 4:
                         System.out.println("Has seleccionado la Opción 4");
                         break;
                     case 5:
                         System.out.println("Has seleccionado la Opción 5");
+                        showIctio();
                         break;
                     case 6:
                         nextDay();
@@ -84,15 +92,19 @@ public class Simulador {
                         break;
                     case 8:
                         System.out.println("Has seleccionado la Opción 8");
+                        addFish();
                         break;
                     case 9:
                         System.out.println("Has seleccionado la Opción 9");
+                        sell();
                         break;
                     case 10:
                         System.out.println("Has seleccionado la Opción 10");
+                        cleanTank();
                         break;
                     case 11:
                         System.out.println("Has seleccionado la Opción 11");
+                        emptyTank();
                         break;
                     case 12:
                         upgrade();
@@ -128,7 +140,21 @@ public class Simulador {
 
     public void menuPisc() {
 
+        ArrayList<Piscifactoria> piscinas = new ArrayList<>();
+
+        if (!arrPisRio.isEmpty()) {
+            piscinas.addAll(arrPisRio);
+        } else if (!arrPisMar.isEmpty()) {
+            piscinas.addAll(arrPisMar);
+        }
+
+        System.out.println("Seleccione una opción: ");
+        System.out.println("--------------------------- Piscifactorías ---------------------------");
+
+
+
     }
+
 
     public void selectPisc() {
 
@@ -163,9 +189,6 @@ public class Simulador {
     }
 
     public void addFood() {
-        System.out.println("hola");
-        System.out.println("Pulsa enter para volver al menú...");
-        scanner.next();
 
     }
 
@@ -189,14 +212,25 @@ public class Simulador {
 
     }
 
+    public void contador() {
+
+        int segundos = 5;
+
+        for (int i = segundos; i > 0; i--) {
+            System.out.println("Regresando al menú en: " + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
     Simulador simulador = new Simulador();
-    PecesDatos abadejo = AlmacenPropiedades.ABADEJO;
     simulador.init();
     simulador.menu();
 
     }
-
 }

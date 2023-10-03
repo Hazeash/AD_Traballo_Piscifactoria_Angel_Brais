@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Piscifactoria {
@@ -8,12 +9,13 @@ public class Piscifactoria {
     private int comidaActual;
     private int comidaMax;
     
-    public Piscifactoria(String nombre, List<Tanque> tanques, int comidaActual, int comidaMax) {
+    public Piscifactoria(String nombre, int comidaActual, int comidaMax) {
         this.nombre = nombre;
-        this.tanques = tanques;
+        tanques = new ArrayList<Tanque>();
         this.comidaActual = comidaActual;
         this.comidaMax = comidaMax;
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -39,23 +41,66 @@ public class Piscifactoria {
         this.comidaMax = comidaMax;
     }
 
-    public void showStatus(){
+    public void addTank(int capacidad) {
+        tanques.add(new Tanque(tanques.size() + 1, capacidad));
+    }
+
+    public void showStatus() {
+        int[] arrDatosConjunto = {0,0,0,0,0,0,0};
+        int capacidadMax = 0;
+        for (Tanque tanque : tanques) {
+            int[] datosTanque = tanque.showStatus(); // Obtener los datos del tanque
+            for (int i = 0; i < datosTanque.length; i++) {
+                arrDatosConjunto[i] += datosTanque[i];
+            }
+            capacidadMax += capacidadMax;
+        }
+            System.out.println("=============== " + nombre + " ===============");
+            System.out.println("Tanques: " + tanques.size());
+            System.out.println("Ocupación: " + arrDatosConjunto[0] + " peces / " + capacidadMax + " ("+ ((arrDatosConjunto[0]*100) / capacidadMax) + "%)");
+            System.out.println("Peces vivos: " + arrDatosConjunto[1] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[1]*100) / capacidadMax) + "%)");
+            System.out.println("Peces alimentados: " + arrDatosConjunto[2] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[2]*100) / capacidadMax) + "%)");
+            System.out.println("Peces adultos: " + arrDatosConjunto[3] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)");
+            System.out.println("Hembras / Machos: " + arrDatosConjunto[4] + "/" + arrDatosConjunto[5]);
+            System.out.println("Fértiles: " + arrDatosConjunto[6] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)");
+            System.out.println("Almacén de comida: " + comidaActual + " / " + comidaMax + " (" + ((comidaActual * 100.0) / comidaMax) + "%)");
+    }
+
+    public int[] sendStatus() {
         int[] arrDatosConjunto = {0,0,0,0,0,0,0};
         for (Tanque tanque : tanques) {
             int[] datosTanque = tanque.showStatus(); // Obtener los datos del tanque
             for (int i = 0; i < datosTanque.length; i++) {
-                arrDatosConjunto[i] += datosTanque[i]; 
-            }  
-            System.out.println("=============== " + nombre + " ===============");
-            System.out.println("Tanques: " + tanques.size());
-            System.out.println("Ocupación: " + arrDatosConjunto[0] + " peces / " + tanque.getCapacidadMaxima() + " ("+ ((arrDatosConjunto[0]*100) / tanque.getCapacidadMaxima()) + "%)");
-            System.out.println("Peces vivos: " + arrDatosConjunto[1] + " / " + tanque.getCapacidadMaxima() + " ("+ ((arrDatosConjunto[1]*100) / tanque.getCapacidadMaxima()) + "%)");
-            System.out.println("Peces alimentados: " + arrDatosConjunto[2] + " / " + tanque.getCapacidadMaxima() + " ("+ ((arrDatosConjunto[2]*100) / tanque.getCapacidadMaxima()) + "%)");
-            System.out.println("Peces adultos: " + arrDatosConjunto[3] + " / " + tanque.getCapacidadMaxima() + " ("+ ((arrDatosConjunto[3]*100) / tanque.getCapacidadMaxima()) + "%)");
-            System.out.println("Hembras / Machos: " + arrDatosConjunto[4] + "/" + arrDatosConjunto[5]);
-            System.out.println("Fértiles: " + arrDatosConjunto[6] + " / " + tanque.getCapacidadMaxima() + " ("+ ((arrDatosConjunto[3]*100) / tanque.getCapacidadMaxima()) + "%)");
-            System.out.println("Almacén de comida: " + comidaActual + " / " + comidaMax + " (" + ((comidaActual * 100.0) / comidaMax) + "%)");
+                arrDatosConjunto[i] += datosTanque[i];
+            }
         }
+        return arrDatosConjunto;
     }
-    
+    //int[] arrDatosTanque ={ocupacion,vivos,alimentados,adultos,hembras,machos,fertiles};
+
+    @Override
+    public String toString() {
+
+        int[] arrDatosConjunto = {0,0,0,0,0,0,0};
+        int capacidadMax = 0;
+        for (Tanque tanque : tanques) {
+            int[] datosTanque = tanque.showStatus(); // Obtener los datos del tanque
+            for (int i = 0; i < datosTanque.length; i++) {
+                arrDatosConjunto[i] += datosTanque[i];
+            }
+            capacidadMax += tanque.getCapacidadMaxima();
+        }
+       return "=============== " + nombre + " ===============" + "\n" +
+        "Tanques: " + tanques.size() + "\n" +
+        "Ocupación: " + arrDatosConjunto[0] + " peces / " + capacidadMax + " ("+ ((arrDatosConjunto[0]*100) / capacidadMax) + "%)" + "\n" +
+        "Peces vivos: " + arrDatosConjunto[1] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[1]*100) / capacidadMax) + "%)" + "\n" +
+        "Peces alimentados: " + arrDatosConjunto[2] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[2]*100) / capacidadMax) + "%)"+ "\n" +
+        "Peces adultos: " + arrDatosConjunto[3] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)"+ "\n" +
+        "Hembras / Machos: " + arrDatosConjunto[4] + " / " + arrDatosConjunto[5] + "\n" +
+        "Fértiles: " + arrDatosConjunto[6] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)" + "\n" +
+        "Almacén de comida: " + comidaActual + " / " + comidaMax + " (" + ((comidaActual * 100.0) / comidaMax) + "%)";
+
+    }
 }
+
+//System.out.println("x.- Nombre [vivos/total/espacio]");

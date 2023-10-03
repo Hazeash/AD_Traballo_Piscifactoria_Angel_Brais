@@ -1,6 +1,7 @@
 package simulacion;
 
 import logica.Piscifactoria;
+import logica.PiscifactoriaRio;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,7 +26,7 @@ public class Simulador {
             cartera = new Cartera(100);
             System.out.print("¿Como se va a llamar tu empresa?: ");
             String dato = scanner.nextLine();
-            arrPisRio.add(new Piscifactoria(dato,25,25));
+            arrPisRio.add(new PiscifactoriaRio(dato));
             arrPisRio.get(0).addTank(25);
             dia = 0;
             nombreEmpresa = dato;

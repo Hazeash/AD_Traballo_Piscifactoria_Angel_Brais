@@ -14,10 +14,9 @@ public class Tanque {
         this.capacidadMaxima = capacidadMaxima;
         this.peces = new ArrayList<>();
     }
-
-    public int[] showStatus() {
+    public int[] calcularStatus(){
         int ocupacion = peces.size();
-        double porcentajeOcupado = (ocupacion * 100.0) / capacidadMaxima;
+
         int vivos = 0;
         int alimentados = 0;
         int adultos = 0;
@@ -45,15 +44,18 @@ public class Tanque {
             }
         }
         int[] arrDatosTanque ={ocupacion,vivos,alimentados,adultos,hembras,machos,fertiles};
-
-        System.out.println("=============== logica.Tanque " + numeroTanque + " ===============");
-        System.out.println("Ocupación: " + ocupacion + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
-        System.out.println("Peces vivos: " + vivos + " / " + ocupacion + " (" + ((vivos * 100.0) / ocupacion) + "%)");
-        System.out.println("Peces alimentados: " + alimentados + " / " + vivos + " (" + ((alimentados * 100.0) / vivos) + "%)");
-        System.out.println("Peces adultos: " + adultos + " / " + vivos + " (" + ((adultos * 100.0) / vivos) + "%)");
-        System.out.println("Hembras / Machos: " + hembras + "/" + machos);
-        System.out.println("Fértiles: " + fertiles + " / " + vivos);
-        return arrDatosTanque;
+        return  arrDatosTanque;
+    }
+    public void showStatus() {
+        int[] arrDatosTanque = calcularStatus();
+        double porcentajeOcupado = (arrDatosTanque[0] * 100.0) / capacidadMaxima;
+        System.out.println("=============== Tanque " + numeroTanque + " ===============");
+        System.out.println("Ocupación: " + arrDatosTanque[0] + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
+        System.out.println("Peces vivos: " + arrDatosTanque[1] + " / " + arrDatosTanque[0] + " (" + ((arrDatosTanque[1] * 100.0) / arrDatosTanque[0]) + "%)");
+        System.out.println("Peces alimentados: " + arrDatosTanque[2] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[2] * 100.0) / arrDatosTanque[1]) + "%)");
+        System.out.println("Peces adultos: " + arrDatosTanque[3] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[3] * 100.0) / arrDatosTanque[1]) + "%)");
+        System.out.println("Hembras / Machos: " + arrDatosTanque[4] + " / " + arrDatosTanque[5]);
+        System.out.println("Fértiles: " + arrDatosTanque[6] + " / " + arrDatosTanque[1]);
     }
 
     public void showFishStatus() {

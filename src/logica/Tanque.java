@@ -1,7 +1,6 @@
 package logica;
 
-import logica.Pez;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,19 +62,73 @@ public class Tanque {
         }
     }
 
-    public void showCapacity() {
+    public void showCapacity(Piscifactoria piscifactoria) {
         int ocupacion = peces.size();
         double porcentajeOcupado = (ocupacion * 100.0) / capacidadMaxima;
-        System.out.println("logica.Tanque #" + numeroTanque + " de la piscifactoría al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " peces/" + capacidadMaxima + "]");
+        System.out.println("Tanque " + numeroTanque + " de la piscifactoría"+ piscifactoria.getNombre() + " al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " /" + capacidadMaxima + "]");
     }
 
-    public void nextDay() {
+    public void nextDay(int comida) {
         for (Pez pez : peces) {
-            pez.grow();
+            pez.grow(comida);
         }
-        // Realizar aquí el proceso de reproducción según tus reglas específicas
+        reproducir();
     }
+    public void reproducir(){
+        ArrayList<Pez> machos= new ArrayList<>();
+        ArrayList<Pez> hembras= new ArrayList<>();
+        for (Pez pez : peces) {
+            if (pez.estaVivo()){
+                if (pez.getSexo() == 'M'){
+                    machos.add(pez);
+                }else {
+                    hembras.add(pez);
+                }
+            }
+        }
+        //Recorre todos os machos e si topa femia fertil reproduce.
+        for (Pez macho :machos) {
+            if (macho.esFertil()){
+                for (int i =0;i< hembras.size();i++) {
+                    if (hembras.get(i).esFertil()){
+                      i= hembras.size();
+                        try{
+                            macho.reproducirse();
+                            hembras.get(i).reproducirse();
+                            nuevaCria(macho.getClass());
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
+                    }
+                }
+            }
+            //Comprobar si el macho sigue siendo fertil , lo que significa que no hay hembras fertiles en el tanque , por lo cual no se comprueba con el resto de machos.
+            if(macho.esFertil()){
+                break;
+            }
+        }
+    }
+    public void nuevaCria(Class<? extends Pez> tipoPez) throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
+        ArrayList<Pez> machos = new ArrayList<>();
+        ArrayList<Pez> hembras = new ArrayList<>();
+        for (Pez pez : peces) {
+            if (pez.getSexo() == 'M') {
+                machos.add(pez);
+            } else {
+                hembras.add(pez);
+            }
+        }
+        Pez nuevoPez ;
+        if (machos.size() > hembras.size()){
+            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('H');
+        }else{
+            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('M');
+        }
+            peces.add(nuevoPez);
+
+    }
     public int getNumeroTanque() {
         return numeroTanque;
     }

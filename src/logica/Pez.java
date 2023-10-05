@@ -3,6 +3,7 @@ package logica;
 import logica.IPezMar;
 import logica.IPezRio;
 import propiedades.PecesDatos;
+import simulacion.Simulador;
 
 import java.util.List;
 import java.util.Random;
@@ -27,12 +28,13 @@ public abstract class Pez implements IPezMar, IPezRio {
     }
 
     // Método para hacer crecer un día al pez
-    public void grow(int comida) {
+    public void grow(Piscifactoria piscifactoria) {
         Random random = new Random();
         if (vivo) {
-            if (comida > 0) {
+            if (piscifactoria.getComidaActual() > 0) {
                 alimentado = true;
-            } else {
+                piscifactoria.setComidaActual(piscifactoria.getComidaActual() - 1);
+            }else{
                 vivo = random.nextBoolean();
             }
             edad += 1;

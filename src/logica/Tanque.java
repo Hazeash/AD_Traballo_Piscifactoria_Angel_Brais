@@ -1,5 +1,7 @@
 package logica;
 
+import simulacion.Simulador;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 public class Tanque {
     private final int numeroTanque;
     private final int capacidadMaxima;
-    private List<Pez> peces;
+    private ArrayList<Pez> peces;
 
     public Tanque(int numeroTanque, int capacidadMaxima) {
         this.numeroTanque = numeroTanque;
@@ -70,9 +72,9 @@ public class Tanque {
         System.out.println("Tanque " + numeroTanque + " de la piscifactoría"+ piscifactoria.getNombre() + " al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " /" + capacidadMaxima + "]");
     }
 
-    public void nextDay(int comida) {
+    public void nextDay(Piscifactoria piscifactoria) {
         for (Pez pez : peces) {
-            pez.grow(comida);
+            pez.grow(piscifactoria);
         }
         reproducir();
     }
@@ -97,7 +99,7 @@ public class Tanque {
                         try{
                             macho.reproducirse();
                             hembras.get(i).reproducirse();
-                            nuevaCria(macho.getClass());
+                            nuevaCria();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -112,7 +114,8 @@ public class Tanque {
             }
         }
     }
-    public void nuevaCria(Class<? extends Pez> tipoPez) throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
+    public void nuevaCria() throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
+        Class<? extends Pez> tipoPez = peces.get(0).getClass();
         ArrayList<Pez> machos = new ArrayList<>();
         ArrayList<Pez> hembras = new ArrayList<>();
         for (Pez pez : peces) {
@@ -129,6 +132,28 @@ public class Tanque {
             nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('M');
         }
             peces.add(nuevoPez);
+        //TODO AÑADIR REGISTRO NACIMIENTO ORCA.LIB
+
+    }
+    public void addFish() throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
+        Class<? extends Pez> tipoPez = peces.get(0).getClass();
+        ArrayList<Pez> machos = new ArrayList<>();
+        ArrayList<Pez> hembras = new ArrayList<>();
+        for (Pez pez : peces) {
+            if (pez.getSexo() == 'M') {
+                machos.add(pez);
+            } else {
+                hembras.add(pez);
+            }
+        }
+        Pez nuevoPez ;
+        if (machos.size() > hembras.size()){
+            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('H');
+        }else{
+            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('M');
+        }
+        peces.add(nuevoPez);
+        //TODO AÑADIR REGISTRO COMPRA PEZ ORCA.LIB
 
     }
     public int getNumeroTanque() {
@@ -139,11 +164,11 @@ public class Tanque {
         return capacidadMaxima;
     }
 
-    public List<Pez> getPeces() {
+    public ArrayList<Pez> getPeces() {
         return peces;
     }
 
-    public void setPeces(List<Pez> peces) {
+    public void setPeces(ArrayList<Pez> peces) {
         this.peces = peces;
     }
 }

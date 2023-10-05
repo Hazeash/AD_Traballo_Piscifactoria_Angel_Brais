@@ -1,5 +1,7 @@
 package logica;
 
+import simulacion.Simulador;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,40 @@ public abstract class Piscifactoria {
     public void showFood(){
         System.out.println("Depósito de comida de la piscifactoría"+ getNombre()+ " al " + ((getComidaActual() *100 )/getComidaMax()) + " de su capacidad. [" + getComidaActual()+" / " + getComidaMax() +"]");
     }
+    public void nextDay(Simulador simulador){
+        if(simulador.getAlmacenCentral() != null){
+            for (Tanque tanque : tanques) {
+                if (tanque.getPeces().size() > getComidaActual()){
+                    if(simulador.getAlmacenCentral() !=null){
+                        AlmacenCentral almacenCentral = simulador.getAlmacenCentral();
+                        int diff = tanque.getPeces().size() - getComidaActual();
+                        if(almacenCentral.getComidaActual() >= diff) {
+                            almacenCentral.setComidaActual(almacenCentral.getComidaActual()-diff);
+                            this.setComidaActual(this.getComidaActual()+diff);
+                        } else {
+                            almacenCentral.setComidaActual(0);
+                            this.setComidaActual(this.getComidaActual()+almacenCentral.getComidaActual());
+                        }
+                    }
+                }
+                tanque.nextDay(this);
+            }
+        }
+    }
+    public void sellFish(Tanque tanque){
+        ArrayList<Pez> peces = tanque.getPeces();
+
+        for (Pez pez: peces) {
+            if (pez.estaVivo() && pez.esAdulto()){
+                peces.remove(pez);
+                //TODO AÑADIR METODO REGISTRO VENTA ORCA.LIB
+                //TODO AÑADIR MONEDAS, MOSTRAR TODOS LOS PECES VENDIDOS
+            }
+        }
+        tanque.setPeces(peces);
+
+    }
+
     @Override
     public String toString() {
 

@@ -1,6 +1,8 @@
 package simulacion;
 
+import logica.AlmacenCentral;
 import logica.Piscifactoria;
+import logica.PiscifactoriaMar;
 import logica.PiscifactoriaRio;
 
 import java.util.ArrayList;
@@ -10,11 +12,21 @@ public class Simulador {
 
     /** Prueba de Javadoc */
     private int dia;
-    private ArrayList<Piscifactoria> arrPisRio = new ArrayList<>();
-    private ArrayList<Piscifactoria> arrPisMar = new ArrayList<>();
+    private ArrayList<PiscifactoriaRio> arrPisRio = new ArrayList<>();
+    private ArrayList<PiscifactoriaMar> arrPisMar = new ArrayList<>();
     private String nombreEmpresa;
     private static final Scanner scanner = new Scanner(System.in);
     private static Cartera cartera;
+
+    private AlmacenCentral almacenCentral = null;
+
+    public AlmacenCentral getAlmacenCentral() {
+        return almacenCentral;
+    }
+
+    public void setAlmacenCentral(AlmacenCentral almacenCentral) {
+        this.almacenCentral = almacenCentral;
+    }
 
     public Simulador() {
     }
@@ -93,7 +105,8 @@ public class Simulador {
                         break;
                     case 8:
                         System.out.println("Has seleccionado la Opción 8");
-                        addFish();
+                        //TODO PREGUNTAR PISCIFACTORIA
+                        addFishRio();
                         break;
                     case 9:
                         System.out.println("Has seleccionado la Opción 9");
@@ -186,14 +199,37 @@ public class Simulador {
     }
 
     public void nextDay() {
+        for (PiscifactoriaRio pisci:arrPisRio) {
+            pisci.nextDay(this);
 
+        }
+        for (PiscifactoriaMar pisci:arrPisMar) {
+            pisci.nextDay(this);
+
+        }
+        //TODO MOSTRAR DATOS PECES VENDIDOS
     }
 
     public void addFood() {
 
     }
 
-    public void addFish() {
+    public void addFishRio(PiscifactoriaRio piscifactoria) {
+        try {
+            piscifactoria.addFish();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+    public void addFishMar(PiscifactoriaMar piscifactoria) {
+        try {
+            piscifactoria.addFish();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 

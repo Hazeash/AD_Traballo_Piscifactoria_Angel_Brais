@@ -1,9 +1,6 @@
 package simulacion;
 
-import logica.AlmacenCentral;
-import logica.Piscifactoria;
-import logica.PiscifactoriaMar;
-import logica.PiscifactoriaRio;
+import logica.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -112,11 +109,13 @@ public class Simulador {
                         break;
                     case 10:
                         System.out.println("Has seleccionado la Opción 10");
-                        cleanTank();
+                        // TODO MENU SELECIONAR TANQUE
+                        //cleanTank();
                         break;
                     case 11:
                         System.out.println("Has seleccionado la Opción 11");
-                        emptyTank();
+                        // TODO MENU SELECIONAR TANQUE
+                        //emptyTank();
                         break;
                     case 12:
                         upgrade();
@@ -142,7 +141,8 @@ public class Simulador {
 
             } catch (Exception e) {
 
-                System.out.println("Algo ha fallado :(");
+                System.err.println("Algo ha fallado :(");
+
 
             }
 
@@ -261,35 +261,27 @@ public class Simulador {
         }
     }
 
-    public void addFishRio(PiscifactoriaRio piscifactoria) {
-        try {
-            piscifactoria.addFish();
-        }catch (Exception e){
-            e.printStackTrace();
+    public void addFish(Pez pez ,Piscifactoria piscifactoria){
+        if(piscifactoria instanceof PiscifactoriaRio){
+            ((PiscifactoriaRio) piscifactoria).addFish(pez);
+        }else {
+            ((PiscifactoriaMar) piscifactoria).addFish(pez);
         }
-
-
-    }
-    public void addFishMar(PiscifactoriaMar piscifactoria) {
-        try {
-            piscifactoria.addFish();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
     }
 
     public void sell() {
+        for (Piscifactoria prio : piscifactorias) {
+            prio.sellAll();
+        }
 
     }
 
-    public void cleanTank() {
-
+    public void cleanTank(Tanque tanque) {
+        tanque.cleanTank();
     }
 
-    public void emptyTank() {
-
+    public void emptyTank(Tanque tanque) {
+        tanque.emptyTank();
     }
 
     public void upgrade() {

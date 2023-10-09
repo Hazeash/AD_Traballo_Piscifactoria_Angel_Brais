@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Piscifactoria {
     protected String nombre;
-    protected List<Tanque> tanques;
+    protected ArrayList<Tanque> tanques;
     protected int comidaActual;
     protected int comidaMax;
 
@@ -25,9 +25,6 @@ public abstract class Piscifactoria {
     public List<Tanque> getTanques() {
         return tanques;
     }
-    public void setTanques(List<Tanque> tanques) {
-        this.tanques = tanques;
-    }
     public int getComidaActual() {
         return comidaActual;
     }
@@ -37,13 +34,9 @@ public abstract class Piscifactoria {
     public int getComidaMax() {
         return comidaMax;
     }
-    public void setComidaMax(int comidaMax) {
-        this.comidaMax = comidaMax;
-    }
+    public void setComidaMax(int comida) {this.comidaMax = comida;}
 
-    public void addTank(int capacidad) {
-        tanques.add(new Tanque(tanques.size() + 1, capacidad));
-    }
+    public abstract void addTank() ;
 
     public void showStatus() {
         int[] arrDatosConjunto = {0,0,0,0,0,0,0};
@@ -55,15 +48,28 @@ public abstract class Piscifactoria {
             }
             capacidadMax += capacidadMax;
         }
+        if(arrDatosConjunto[0] == 0){
+            System.out.println("=============== " + nombre + " ===============");
+            System.out.println("Tanques: " + tanques.size());
+            System.out.println("Ocupación: 0 peces / 0 (0%)");
+            System.out.println("Peces vivos: 0 / 0 (0%)");
+            System.out.println("Peces alimentados: 0 / 0 (0%)");
+            System.out.println("Peces adultos: 0 / 0 (0%)");
+            System.out.println("Hembras / Machos: 0 / 0 (0%)");
+            System.out.println("Fértiles: 0 / 0 (0%)");
+            System.out.println("Almacén de comida: " + comidaActual + " / " + comidaMax + " (" + ((comidaActual * 100.0) / comidaMax) + "%)");
+        }else{
             System.out.println("=============== " + nombre + " ===============");
             System.out.println("Tanques: " + tanques.size());
             System.out.println("Ocupación: " + arrDatosConjunto[0] + " peces / " + capacidadMax + " ("+ ((arrDatosConjunto[0]*100) / capacidadMax) + "%)");
-            System.out.println("Peces vivos: " + arrDatosConjunto[1] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[1]*100) / capacidadMax) + "%)");
-            System.out.println("Peces alimentados: " + arrDatosConjunto[2] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[2]*100) / capacidadMax) + "%)");
-            System.out.println("Peces adultos: " + arrDatosConjunto[3] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)");
+            System.out.println("Peces vivos: " + arrDatosConjunto[1] + " / " + arrDatosConjunto[0] + " ("+ ((arrDatosConjunto[1]*100) / arrDatosConjunto[0]) + "%)");
+            System.out.println("Peces alimentados: " + arrDatosConjunto[2] + " / " + arrDatosConjunto[0] + " ("+ ((arrDatosConjunto[2]*100) / arrDatosConjunto[0]) + "%)");
+            System.out.println("Peces adultos: " + arrDatosConjunto[3] + " / " + arrDatosConjunto[0] + " ("+ ((arrDatosConjunto[3]*100) / arrDatosConjunto[0]) + "%)");
             System.out.println("Hembras / Machos: " + arrDatosConjunto[4] + "/" + arrDatosConjunto[5]);
-            System.out.println("Fértiles: " + arrDatosConjunto[6] + " / " + capacidadMax + " ("+ ((arrDatosConjunto[3]*100) / capacidadMax) + "%)");
+            System.out.println("Fértiles: " + arrDatosConjunto[6] + " / " + arrDatosConjunto[0] + " ("+ ((arrDatosConjunto[3]*100) / arrDatosConjunto[0]) + "%)");
             System.out.println("Almacén de comida: " + comidaActual + " / " + comidaMax + " (" + ((comidaActual * 100.0) / comidaMax) + "%)");
+        }
+
     }
     public void showTankStatus(){
         for (Tanque tanque:tanques) {
@@ -100,20 +106,22 @@ public abstract class Piscifactoria {
             }
         }
     }
-    public void sellFish(Tanque tanque){
-        ArrayList<Pez> peces = tanque.getPeces();
-
-        for (Pez pez: peces) {
-            if (pez.estaVivo() && pez.esAdulto()){
-                peces.remove(pez);
-                //TODO AÑADIR METODO REGISTRO VENTA ORCA.LIB
-                //TODO AÑADIR MONEDAS, MOSTRAR TODOS LOS PECES VENDIDOS
-            }
+    public void cleanTank(){
+        for (Tanque tanque :tanques) {
+            tanque.cleanTank();
         }
-        tanque.setPeces(peces);
+    }
+    public void sellFish(Tanque tanque){
+        tanque.sellFish();
 
     }
+    public void sellAll(){
+        for (Tanque tanque:tanques) {
+            tanque.sellFish();
+        }
 
+
+    }
     public int contarVivos() {
         int vivos = 0;
         for (Tanque tanque:tanques) {
@@ -247,4 +255,3 @@ public abstract class Piscifactoria {
     }
 }
 
-//System.out.println("x.- Nombre [vivos/total/espacio]");

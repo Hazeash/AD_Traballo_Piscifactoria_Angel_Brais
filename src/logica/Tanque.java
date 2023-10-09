@@ -1,20 +1,16 @@
 package logica;
 
-import simulacion.Simulador;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Tanque {
-    private final int numeroTanque;
-    private final int capacidadMaxima;
-    private ArrayList<Pez> peces;
+    protected final int numeroTanque;
+    protected final int capacidadMaxima;
+    protected ArrayList<Pez> peces= new ArrayList<>();
 
     public Tanque(int numeroTanque, int capacidadMaxima) {
         this.numeroTanque = numeroTanque;
         this.capacidadMaxima = capacidadMaxima;
-        this.peces = new ArrayList<>();
     }
     public int[] calcularStatus(){
         int ocupacion = peces.size();
@@ -52,13 +48,24 @@ public class Tanque {
     public void showStatus() {
         int[] arrDatosTanque = calcularStatus();
         double porcentajeOcupado = (arrDatosTanque[0] * 100.0) / capacidadMaxima;
-        System.out.println("=============== Tanque " + numeroTanque + " ===============");
-        System.out.println("Ocupación: " + arrDatosTanque[0] + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
-        System.out.println("Peces vivos: " + arrDatosTanque[1] + " / " + arrDatosTanque[0] + " (" + ((arrDatosTanque[1] * 100.0) / arrDatosTanque[0]) + "%)");
-        System.out.println("Peces alimentados: " + arrDatosTanque[2] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[2] * 100.0) / arrDatosTanque[1]) + "%)");
-        System.out.println("Peces adultos: " + arrDatosTanque[3] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[3] * 100.0) / arrDatosTanque[1]) + "%)");
-        System.out.println("Hembras / Machos: " + arrDatosTanque[4] + " / " + arrDatosTanque[5]);
-        System.out.println("Fértiles: " + arrDatosTanque[6] + " / " + arrDatosTanque[1]);
+        if(arrDatosTanque[0] == 0){
+            System.out.println("=============== Tanque " + numeroTanque + " ===============");
+            System.out.println("Ocupación: 0 peces / 0 (0%)");
+            System.out.println("Peces vivos: 0 / 0 (0%)");
+            System.out.println("Peces alimentados: 0 / 0 (0%)");
+            System.out.println("Peces adultos: 0 / 0 (0%)");
+            System.out.println("Hembras / Machos: 0 / 0 (0%)");
+            System.out.println("Fértiles: 0 / 0 (0%)");
+        }else{
+            System.out.println("=============== Tanque " + numeroTanque + " ===============");
+            System.out.println("Ocupación: " + arrDatosTanque[0] + " / " + capacidadMaxima + " (" + porcentajeOcupado + "%)");
+            System.out.println("Peces vivos: " + arrDatosTanque[1] + " / " + arrDatosTanque[0] + " (" + ((arrDatosTanque[1] * 100.0) / arrDatosTanque[0]) + "%)");
+            System.out.println("Peces alimentados: " + arrDatosTanque[2] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[2] * 100.0) / arrDatosTanque[1]) + "%)");
+            System.out.println("Peces adultos: " + arrDatosTanque[3] + " / " + arrDatosTanque[1] + " (" + ((arrDatosTanque[3] * 100.0) / arrDatosTanque[1]) + "%)");
+            System.out.println("Hembras / Machos: " + arrDatosTanque[4] + " / " + arrDatosTanque[5]);
+            System.out.println("Fértiles: " + arrDatosTanque[6] + " / " + arrDatosTanque[1]);
+        }
+
     }
 
     public void showFishStatus() {
@@ -78,6 +85,7 @@ public class Tanque {
             pez.grow(piscifactoria);
         }
         reproducir();
+        sellFish();
     }
     public void reproducir(){
         ArrayList<Pez> machos= new ArrayList<>();
@@ -136,26 +144,36 @@ public class Tanque {
         //TODO AÑADIR REGISTRO NACIMIENTO ORCA.LIB
 
     }
-    public void addFish() throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
-        Class<? extends Pez> tipoPez = peces.get(0).getClass();
+    public boolean addFish(Pez pez) throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
         ArrayList<Pez> machos = new ArrayList<>();
         ArrayList<Pez> hembras = new ArrayList<>();
-        for (Pez pez : peces) {
-            if (pez.getSexo() == 'M') {
-                machos.add(pez);
+        if (!peces.isEmpty()){
+            if (peces.get(0).getClass() == pez.getClass()){
+                for (Pez p : peces) {
+                    if (p.getSexo() == 'M') {
+                        machos.add(pez);
+                    } else {
+                        hembras.add(pez);
+                    }
+                }
+                Pez nuevoPez ;
+                if (machos.size() > hembras.size()){
+                    nuevoPez = pez.getClass().getDeclaredConstructor(char.class).newInstance('H');
+                }else{
+                    nuevoPez = pez.getClass().getDeclaredConstructor(char.class).newInstance('M');
+                }
+                peces.add(nuevoPez);
+                return true;
             } else {
-                hembras.add(pez);
+                return false;
             }
+        } else {
+            peces = new ArrayList<Pez>();
+            Pez nuevoPez = pez.getClass().getDeclaredConstructor(char.class).newInstance('H');
+            peces.add(nuevoPez);
+            //TODO AÑADIR REGISTRO COMPRA PEZ ORCA.LIB
+            return true;
         }
-        Pez nuevoPez ;
-        if (machos.size() > hembras.size()){
-            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('H');
-        }else{
-            nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('M');
-        }
-        peces.add(nuevoPez);
-        //TODO AÑADIR REGISTRO COMPRA PEZ ORCA.LIB
-
     }
 
     public int contarVivos() {
@@ -169,8 +187,24 @@ public class Tanque {
         return vivos;
     }
 
-    public int getNumeroTanque() {
-        return numeroTanque;
+    public void sellFish(){
+        for (Pez pez: peces) {
+            if (pez.estaVivo() && pez.esAdulto()){
+                peces.remove(pez);
+                //TODO AÑADIR METODO REGISTRO VENTA ORCA.LIB
+                //TODO AÑADIR MONEDAS, MOSTRAR TODOS LOS PECES VENDIDOS
+            }
+        }
+    }
+    public void cleanTank(){
+        for (Pez pez :peces) {
+            if (!pez.estaVivo()){
+                peces.remove(pez);
+            }
+        }
+    }
+    public void emptyTank(){
+        peces = new ArrayList<Pez>();
     }
 
     public int getCapacidadMaxima() {
@@ -179,9 +213,5 @@ public class Tanque {
 
     public ArrayList<Pez> getPeces() {
         return peces;
-    }
-
-    public void setPeces(ArrayList<Pez> peces) {
-        this.peces = peces;
     }
 }

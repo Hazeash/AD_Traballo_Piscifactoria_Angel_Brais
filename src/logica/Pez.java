@@ -1,26 +1,21 @@
 package logica;
 
 import propiedades.PecesDatos;
-
 import java.util.Random;
 
 public abstract class Pez implements IPezMar, IPezRio {
-
-    private int edad;
-    private char sexo;
-    private boolean fertil;
-    private boolean vivo;
-    private boolean alimentado;
-    private boolean adulto;
-    private int edadUltimaPuesta;
-    private PecesDatos pecesDatos;
+    protected int edad = 0;
+    protected final char sexo;
+    protected boolean fertil = false;
+    protected boolean vivo = true;
+    protected boolean alimentado = false;
+    protected boolean adulto;
+    protected int ultimaPuesta;
+    protected PecesDatos pecesDatos;
 
     public Pez(PecesDatos datos, char sexo) {
-        this.edad = 0;
         this.sexo = sexo;
-        this.fertil = false;
-        this.vivo = true;
-        this.alimentado = false;
+        this.pecesDatos = datos;
     }
 
     // Método para hacer crecer un día al pez
@@ -33,23 +28,23 @@ public abstract class Pez implements IPezMar, IPezRio {
             }else{
                 vivo = random.nextBoolean();
             }
+        }
+        if (vivo){
             edad += 1;
-            if (edad >= pecesDatos.getMadurez()){
+            ultimaPuesta -=1;
+            if (edad == pecesDatos.getMadurez()){
                 adulto = true;
-            }
-            if (edad == edadUltimaPuesta + pecesDatos.getCiclo()){
+                ultimaPuesta =0;
                 fertil = true;
             }
-            if (edad == pecesDatos.getOptimo()){
-                //super.venta();
-
+            if (ultimaPuesta ==0){
+                fertil = true;
             }
-
         }
     }
     public void reproducirse(){
-        fertil = false;
-        edadUltimaPuesta = edad;
+        this.fertil = false;
+        this.ultimaPuesta = pecesDatos.getCiclo();
     }
     // Método para reiniciar el pez
     public void reset() {
@@ -82,42 +77,20 @@ public abstract class Pez implements IPezMar, IPezRio {
                "Fértil: " + (fertil ? "Sí" : "No");
     }
 
-    public int getEdad() {
-        return edad;
-    }
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
     public char getSexo() {
         return sexo;
-    }
-    public void setSexo(char sexo) {
-        this.sexo = sexo;
     }
     public boolean estaVivo() {
         return vivo;
     }
-    public void setVivo(boolean vivo) {
-        this.vivo = vivo;
-    }
     public boolean haSidoAlimentado() {
         return alimentado;
     }
-    public void setAlimentado(boolean alimentado) {
-        this.alimentado = alimentado;
-    }
     public boolean esFertil() {
         return fertil;
-    }
-    public void setFertil(boolean fertil) {
-        this.fertil = fertil;
     }
     public boolean esAdulto() {
         return adulto;
     }
 
-    public int getEdadUltimaPuesta() {
-        return edadUltimaPuesta;
-    }
 }

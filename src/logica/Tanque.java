@@ -48,6 +48,7 @@ public class Tanque {
         int[] arrDatosTanque ={ocupacion,vivos,alimentados,adultos,hembras,machos,fertiles};
         return  arrDatosTanque;
     }
+
     public void showStatus() {
         int[] arrDatosTanque = calcularStatus();
         double porcentajeOcupado = (arrDatosTanque[0] * 100.0) / capacidadMaxima;
@@ -156,6 +157,18 @@ public class Tanque {
         //TODO AÑADIR REGISTRO COMPRA PEZ ORCA.LIB
 
     }
+
+    public int contarVivos() {
+
+        int vivos = 0;
+        for (Pez pez : peces) {
+            if (pez.estaVivo()) {
+                vivos++;
+            }
+        }
+        return vivos;
+    }
+
     public int getNumeroTanque() {
         return numeroTanque;
     }

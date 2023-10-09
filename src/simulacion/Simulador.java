@@ -12,8 +12,7 @@ public class Simulador {
 
     /** Prueba de Javadoc */
     private int dia;
-    private ArrayList<PiscifactoriaRio> arrPisRio = new ArrayList<>();
-    private ArrayList<PiscifactoriaMar> arrPisMar = new ArrayList<>();
+    private ArrayList<Piscifactoria> piscifactorias = new ArrayList<>();
     private String nombreEmpresa;
     private static final Scanner scanner = new Scanner(System.in);
     private static Cartera cartera;
@@ -38,8 +37,7 @@ public class Simulador {
             cartera = new Cartera(100);
             System.out.print("¿Como se va a llamar tu empresa?: ");
             String dato = scanner.nextLine();
-            arrPisRio.add(new PiscifactoriaRio(dato));
-            arrPisRio.get(0).addTank(25);
+            piscifactorias.add(new PiscifactoriaRio(dato));
             dia = 0;
             nombreEmpresa = dato;
 
@@ -106,7 +104,7 @@ public class Simulador {
                     case 8:
                         System.out.println("Has seleccionado la Opción 8");
                         //TODO PREGUNTAR PISCIFACTORIA
-                        addFishRio();
+                        //addFishRio();
                         break;
                     case 9:
                         System.out.println("Has seleccionado la Opción 9");
@@ -154,23 +152,35 @@ public class Simulador {
 
     public void menuPisc() {
 
-        ArrayList<Piscifactoria> piscinas = new ArrayList<>();
+        int vivos = 0;
 
-        if (!arrPisRio.isEmpty()) {
-            piscinas.addAll(arrPisRio);
-        } else if (!arrPisMar.isEmpty()) {
-            piscinas.addAll(arrPisMar);
-        }
-
-        System.out.println("Seleccione una opción: ");
         System.out.println("--------------------------- Piscifactorías ---------------------------");
-
-
-
+        for (int i = 0; i < piscifactorias.size(); i++) {
+            System.out.println(i + 1 + ".- " + piscifactorias.get(i).getNombre() + "/" + piscifactorias.get(i).contarVivos() + "/" + piscifactorias.get(i).contarTotales() + "/" + piscifactorias.get(i).contarMaximos());
+        }
+        System.out.println("Selecciona una piscifactoria: ");
     }
 
+    public Piscifactoria selectPisc() {
 
-    public void selectPisc() {
+        menuPisc();
+        Piscifactoria pisc = null;
+
+        boolean control = true;
+
+        do {
+            int eleccion = scanner.nextInt();
+            if (eleccion <= piscifactorias.size() && eleccion >= 0) {
+                control = false;
+                if (eleccion != 0) {
+                    pisc = piscifactorias.get(eleccion - 1);
+                }
+            } else {
+                System.out.println("No has seleccionado una opción válida :(");
+            }
+        } while (control);
+
+        return pisc;
 
     }
 
@@ -199,11 +209,7 @@ public class Simulador {
     }
 
     public void nextDay() {
-        for (PiscifactoriaRio pisci:arrPisRio) {
-            pisci.nextDay(this);
-
-        }
-        for (PiscifactoriaMar pisci:arrPisMar) {
+        for (Piscifactoria pisci:piscifactorias) {
             pisci.nextDay(this);
 
         }
@@ -212,6 +218,47 @@ public class Simulador {
 
     public void addFood() {
 
+        Piscifactoria piscifactoria = selectPisc();
+        boolean control = true;
+
+        if (piscifactoria.getComidaActual() == piscifactoria.getComidaMax()) {
+
+            System.out.println("Ya has alcanzado la cantidad máxima de comida.");
+
+        } else {
+
+            do {
+
+                System.out.println("¿Cuanta comida quieres comprar?: ");
+                System.out.println("1.- Comprar 5: ");
+                System.out.println("2.- Comprar 10: ");
+                System.out.println("3.- Comprar 25: ");
+                System.out.println("4.- Llenar almacen: ");
+                System.out.println("0.- Salir: ");
+
+                int eleccion = scanner.nextInt();
+
+                switch (eleccion) {
+
+                    case 0:
+                        control = false;
+                        break;
+                    case 1:
+                        piscifactoria.comprarCinco(cartera);
+                        break;
+                    case 2:
+                        piscifactoria.comprarDiez(cartera);
+                        break;
+                    case 3:
+                        piscifactoria.comprarVeintiCinco(cartera);
+                        break;
+                    case 4:
+                        piscifactoria.comprarEnchido(cartera);
+                        break;
+                }
+
+            } while (control);
+        }
     }
 
     public void addFishRio(PiscifactoriaRio piscifactoria) {
@@ -267,6 +314,7 @@ public class Simulador {
 
     Simulador simulador = new Simulador();
     simulador.init();
+    simulador.piscifactorias.get(0).setComidaMax(100);
     simulador.menu();
 
     }

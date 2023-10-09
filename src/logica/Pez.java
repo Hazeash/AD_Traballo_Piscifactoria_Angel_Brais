@@ -1,11 +1,7 @@
 package logica;
 
-import logica.IPezMar;
-import logica.IPezRio;
 import propiedades.PecesDatos;
-import simulacion.Simulador;
 
-import java.util.List;
 import java.util.Random;
 
 public abstract class Pez implements IPezMar, IPezRio {
@@ -33,7 +29,7 @@ public abstract class Pez implements IPezMar, IPezRio {
         if (vivo) {
             if (piscifactoria.getComidaActual() > 0) {
                 alimentado = true;
-                piscifactoria.setComidaActual(piscifactoria.getComidaActual() - 1);
+                piscifactoria.comidaActual(piscifactoria.getComidaActual() - 1);
             }else{
                 vivo = random.nextBoolean();
             }

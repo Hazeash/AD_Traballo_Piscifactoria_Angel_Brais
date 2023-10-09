@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PiscifactoriaMar extends Piscifactoria{
     public PiscifactoriaMar(String nombre) {
         super(nombre);
-        this.setComidaActual(100);
+        this.comidaActual(100);
         this.setComidaMax(100);
         Tanque primerTanque = new Tanque(1,100);
         ArrayList<Tanque> arrTanques = new ArrayList<>();
@@ -13,8 +13,8 @@ public class PiscifactoriaMar extends Piscifactoria{
         this.setTanques(arrTanques);
     }
     public void upgradeFood(){
-        setComidaMax(getComidaMax() + 100);
-        System.out.println("Almacén de comida de la piscifactoría "+ getNombre() +" mejorado. Su capacidad ha aumentado en 100 hasta un total de " + getComidaMax());
+        this.comidaMax += 100;
+        System.out.println("Almacén de comida de la piscifactoría "+ getNombre() +" mejorado. Su capacidad ha aumentado en 100 hasta un total de " + this.comidaMax);
     }
     public void addFish(){
         for (Tanque tanque:getTanques()) {

@@ -200,7 +200,7 @@ public class Simulador {
         boolean control = true;
 
         do {
-            int eleccion = scanner.nextInt();
+            int eleccion = obtenerEntero();
             if (eleccion <= pisc.getTanques().size() && eleccion >= 0) {
                 control = false;
                 if (eleccion != 0) {
@@ -321,6 +321,131 @@ public class Simulador {
     }
 
     public void upgrade() {
+
+        boolean control = true;
+
+        do {
+
+            System.out.println("¿Qué quieres mejorar?: ");
+            System.out.println("1.- Comprar edificios: ");
+            System.out.println("2.- Mejorar edificios: ");
+            System.out.println("3.- Cancelar: ");
+
+            int eleccion = obtenerEntero();
+
+            switch (eleccion) {
+
+                case 1:
+                    boolean control_1 = true;
+                    do {
+                        System.out.println("1.- Piscifactoria: ");
+                        System.out.println("2.- Almacén central: ");
+                        System.out.println("3.- Volver: ");
+
+                        int eleccion_1 = obtenerEntero();
+
+                        switch (eleccion_1) {
+                            case 1:
+                                boolean control_2 = true;
+                                do {
+                                    System.out.println("1.- Piscifactoria de río: ");
+                                    System.out.println("2.- Piscifactoria de mar: ");
+                                    System.out.println("3.- Volver: ");
+
+                                    int rio = 0;
+                                    int mar = 0;
+
+                                    for (Piscifactoria pisc: piscifactorias) {
+                                        if (pisc instanceof PiscifactoriaRio) {
+                                            rio++;
+                                        } else {
+                                            mar++;
+                                        }
+                                    }
+
+                                    int eleccion_2 = obtenerEntero();
+
+                                    switch (eleccion_2) {
+                                        case 1:
+
+                                            if (cartera.getDinero() >= 500 * rio) {
+
+                                                System.out.println("Como quieres llamar a la piscifactoría: ");
+                                                String nombre = scanner.nextLine();
+                                                cartera.setDinero(cartera.getDinero() - 500 * rio);
+                                                piscifactorias.add(new PiscifactoriaRio(nombre));
+
+                                            } else {
+                                                System.out.println("No tiene suficiente dinero :c");
+                                            }
+                                            break;
+                                        case 2:
+                                            if (cartera.getDinero() >= 500 * mar) {
+
+                                                System.out.println("Como quieres llamar a la piscifactoría: ");
+                                                String nombre = scanner.nextLine();
+                                                cartera.setDinero(cartera.getDinero() - 500 * mar);
+                                                piscifactorias.add(new PiscifactoriaMar(nombre));
+
+                                            } else {
+                                                System.out.println("No tiene suficiente dinero :c");
+                                            }
+                                            break;
+                                        case 3:
+                                            control_2 = false;
+                                            break;
+                                        default:
+                                            System.out.println("No has seleccionado una opción válida :(");
+                                            break;
+                                    }
+
+                                } while (control_2);
+                                break;
+                            case 2:
+                                if (almacenCentral == null) {
+                                    if (cartera.getDinero() >= 2000) {
+                                        almacenCentral = new AlmacenCentral();
+                                        cartera.setDinero(cartera.getDinero() - 2000);
+                                    } else {
+                                        System.out.println("No tiene suficiente dinero :c");
+                                    }
+                                } else {
+                                    System.out.println("Ya tienes el almacén central :/");
+                                }
+                                break;
+                            case 3:
+                                control_1 = false;
+                                break;
+                        }
+                    } while (control_1);
+                    break;
+                case 2:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    break;
+                case 3:
+                    control = false;
+                    break;
+            }
+
+        } while (control);
+    }
+
+    public void comprarEdificios() {
+
     }
 
     public void contador() {

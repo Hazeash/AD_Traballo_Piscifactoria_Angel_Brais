@@ -2,7 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 
-public class PiscifactoriaRio extends Piscifactoria{
+public class PiscifactoriaRio extends Piscifactoria {
     public PiscifactoriaRio(String nombre) {
         super(nombre);
         this.comidaActual = 25;

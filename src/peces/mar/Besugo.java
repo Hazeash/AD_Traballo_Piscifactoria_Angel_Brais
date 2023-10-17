@@ -1,4 +1,4 @@
-package peces;
+package peces.mar;
 
 import logica.IPezMar;
 import logica.propiedades.Canivoros;

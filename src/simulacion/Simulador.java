@@ -1,6 +1,7 @@
 package simulacion;
 
 import logica.*;
+import peces.rio.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +99,39 @@ public class Simulador {
                         break;
                     case 8:
                         System.out.println("Has seleccionado la Opción 8");
-                        //TODO PREGUNTAR PISCIFACTORIA
-                        //addFishRio();
+                        Piscifactoria pisc = selectPisc();
+                        if (pisc instanceof  PiscifactoriaRio){
+                            boolean control = true;
+                            do{
+                                System.out.println("1.Carpa Plateada");
+                                System.out.println("2.Lucio del Norte");
+                                System.out.println("3.Pejerrey");
+                                System.out.println("4.Salmon Chinook");
+                                System.out.println("5.Tilapia Del Nilo");
+                                int seleccion = obtenerEntero();
+                                switch (seleccion) {
+                                    case 1:
+                                        addFish(new CarpaPlateada('H'),pisc);
+                                        break;
+                                    case 2:
+                                        addFish(new LucioDelNorte('H'),pisc);
+                                        break;
+                                    case 3:
+                                        addFish(new Pejerrey('H'),pisc);
+                                        break;
+                                    case 4:
+                                        addFish(new SalmonChinook('H'),pisc);
+                                        break;
+                                    case 5:
+                                        addFish(new TilapiaDelNilo('H'),pisc);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }while(control);
+                        }else{
+
+                        }
                         break;
                     case 9:
                         System.out.println("Has seleccionado la Opción 9");

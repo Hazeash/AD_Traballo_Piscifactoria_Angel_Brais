@@ -4,6 +4,7 @@ import logica.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Simulador {
@@ -66,9 +67,8 @@ public class Simulador {
                 System.out.println("12. Mejorar");
                 System.out.println("13. Pasar varios días");
                 System.out.println("14. Salir");
-                System.out.print("Elige una opción: ");
 
-                opcion = scanner.nextInt();
+                opcion = obtenerEntero();
 
                 switch (opcion) {
                     case 1:
@@ -137,6 +137,27 @@ public class Simulador {
         }
     }
 
+    public int obtenerEntero() {
+
+        boolean control = true;
+        int opcion = -1;
+
+        do {
+            try {
+
+                System.out.print("Elige una opción: ");
+                opcion = scanner.nextInt();
+                control = false;
+                return opcion;
+
+            } catch (InputMismatchException e) {
+                System.out.println("No has seleccionado una opción válida :(");
+                scanner.next();
+            }
+        } while (control);
+        return opcion;
+    }
+
     public void menuPisc() {
         System.out.println("--------------------------- Piscifactorías ---------------------------");
         System.out.println("[Peces vivos / Peces totales / Espacio total]");
@@ -158,7 +179,8 @@ public class Simulador {
         Piscifactoria pisc = null;
         boolean control = true;
         do {
-            int eleccion = scanner.nextInt();
+            int eleccion = obtenerEntero();
+
             if (eleccion <= piscifactorias.size() && eleccion >= 0) {
                 control = false;
                 if (eleccion != 0) {
@@ -250,7 +272,7 @@ public class Simulador {
                 System.out.println("4.- Llenar almacen: ");
                 System.out.println("0.- Salir: ");
 
-                int eleccion = scanner.nextInt();
+                int eleccion = obtenerEntero();
 
                 switch (eleccion) {
 

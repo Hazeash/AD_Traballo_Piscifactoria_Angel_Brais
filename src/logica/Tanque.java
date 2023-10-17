@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Tanque {
+
+
     protected final int numeroTanque;
     protected final int capacidadMaxima;
     protected ArrayList<Pez> peces= new ArrayList<>();
@@ -11,6 +13,9 @@ public class Tanque {
     public Tanque(int numeroTanque, int capacidadMaxima) {
         this.numeroTanque = numeroTanque;
         this.capacidadMaxima = capacidadMaxima;
+    }
+    public int getNumeroTanque() {
+        return numeroTanque;
     }
     public int[] calcularStatus(){
         int ocupacion = peces.size();
@@ -175,7 +180,6 @@ public class Tanque {
             return true;
         }
     }
-
     public int contarVivos() {
 
         int vivos = 0;

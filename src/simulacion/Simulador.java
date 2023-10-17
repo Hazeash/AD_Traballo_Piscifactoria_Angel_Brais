@@ -3,6 +3,7 @@ package simulacion;
 import logica.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Simulador {
@@ -47,11 +48,8 @@ public class Simulador {
     }
 
     public void menu() {    // Menú principal
-
         try {
-
             int opcion;
-
             do {
                 System.out.println("---- Menú ----");
                 System.out.println("1. Estado general");
@@ -109,13 +107,11 @@ public class Simulador {
                         break;
                     case 10:
                         System.out.println("Has seleccionado la Opción 10");
-                        // TODO MENU SELECIONAR TANQUE
-                        //cleanTank();
+                        cleanTank(selectTank());
                         break;
                     case 11:
                         System.out.println("Has seleccionado la Opción 11");
-                        // TODO MENU SELECIONAR TANQUE
-                        //emptyTank();
+                        emptyTank(selectTank());
                         break;
                     case 12:
                         upgrade();
@@ -132,42 +128,35 @@ public class Simulador {
                         break;
                 }
             } while (opcion >= 1 && opcion <= 14);
-
         } finally {
-
             try {
-
                 scanner.close();
-
             } catch (Exception e) {
-
                 System.err.println("Algo ha fallado :(");
-
-
             }
-
         }
-
     }
 
     public void menuPisc() {
-
-        int vivos = 0;
-
         System.out.println("--------------------------- Piscifactorías ---------------------------");
+        System.out.println("[Peces vivos / Peces totales / Espacio total]");
         for (int i = 0; i < piscifactorias.size(); i++) {
             System.out.println(i + 1 + ".- " + piscifactorias.get(i).getNombre() + "/" + piscifactorias.get(i).contarVivos() + "/" + piscifactorias.get(i).contarTotales() + "/" + piscifactorias.get(i).contarMaximos());
         }
         System.out.println("Selecciona una piscifactoria: ");
     }
-
+    public void menuTanque(Piscifactoria pisc){
+        List<Tanque> tanques = pisc.getTanques();
+        System.out.println("--------------------------- Tanques ---------------------------");
+        for (Tanque tanque : tanques) {
+            System.out.println(tanque.getNumeroTanque() + ".-" + tanque.getPeces().getClass());
+        }
+        System.out.println("Selecciona una Tanque: ");
+    }
     public Piscifactoria selectPisc() {
-
         menuPisc();
         Piscifactoria pisc = null;
-
         boolean control = true;
-
         do {
             int eleccion = scanner.nextInt();
             if (eleccion <= piscifactorias.size() && eleccion >= 0) {
@@ -179,33 +168,58 @@ public class Simulador {
                 System.out.println("No has seleccionado una opción válida :(");
             }
         } while (control);
-
         return pisc;
-
     }
 
-    public void selectTank() {
+    public Tanque selectTank() {
+        Piscifactoria pisc = selectPisc();
+        menuTanque(pisc);
+        Tanque tanque = null;
+        boolean control = true;
 
+        do {
+            int eleccion = scanner.nextInt();
+            if (eleccion <= pisc.getTanques().size() && eleccion >= 0) {
+                control = false;
+                if (eleccion != 0) {
+                    tanque = pisc.getTanques().get(eleccion - 1);
+                }
+            } else {
+                System.out.println("No has seleccionado una opción válida :(");
+            }
+        } while (control);
+        return tanque;
     }
 
     public void showGeneralStatus() {
-
+        for (Piscifactoria pisc:piscifactorias) {
+            pisc.showStatus();
+        }
+        System.out.println("-----DIA : " + dia + " -----");
+        System.out.println("-----MONEDAS : " + cartera.getDinero() + " -----");
+        if (almacenCentral != null){
+            almacenCentral.showDatos();
+        }
+        System.out.println("------------------------");
     }
 
     public void showSpecificStatus() {
-
+        Piscifactoria pisc = selectPisc();
+        pisc.showStatus();
     }
 
     public void showTankStatus() {
-
+        Tanque tanque = selectTank();
+        tanque.showStatus();
     }
 
     public void showStats() {
+        //TODO ESTO DEVOLVEO ORCA.ESTADISTICAS ASI QUE HAI QUE IMPLEMENTAR TODOS OS METODOS DESO ANTES DESTE
 
     }
 
     public void showIctio() {
-
+        //TODO ESTO TEN QUE ELGIR UNHA CLASE DE PEIXE E MOSTRAR OS DATOS DESTA CLASE , DAS QUE IMPLEMENTEMOS
     }
 
     public void nextDay() {
@@ -285,7 +299,6 @@ public class Simulador {
     }
 
     public void upgrade() {
-
     }
 
     public void contador() {

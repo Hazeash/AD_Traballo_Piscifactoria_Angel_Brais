@@ -1,7 +1,7 @@
 package logica;
 
 public class AlmacenCentral {
-    private int capacidad;
+    private int capacidad = 200;
     private int comidaActual;
 
     public int getComidaActual() {
@@ -11,9 +11,9 @@ public class AlmacenCentral {
     public void setComidaActual(int comidaActual) {
         this.comidaActual = comidaActual;
     }
-
-    public AlmacenCentral() {
-        this.capacidad = 200;
+    public void showDatos(){
+        System.out.println("[Actual/Maximo/Porcentaje]");
+        System.out.println("["+comidaActual+"/"+capacidad+"/"+comidaActual/capacidad +"%]");
     }
 
     public int getCapacidad() {

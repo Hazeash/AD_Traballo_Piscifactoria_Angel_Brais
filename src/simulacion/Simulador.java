@@ -1,7 +1,12 @@
 package simulacion;
 
+import estadisticas.Estadisticas;
 import logica.*;
+import peces.ambos.SalmonAtlantico;
+import peces.ambos.TruchaArcoiris;
+import peces.mar.*;
 import peces.rio.*;
+import propiedades.AlmacenPropiedades;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +19,10 @@ public class Simulador {
     private int dia;
     private ArrayList<Piscifactoria> piscifactorias = new ArrayList<>();
     private String nombreEmpresa;
-    private static final Scanner scanner = new Scanner(System.in);
-    private static Cartera cartera;
+    private final Scanner scanner = new Scanner(System.in);
+    private Cartera cartera;
+    private String[] peixes = {AlmacenPropiedades.SALMON_ATLANTICO.getNombre(),AlmacenPropiedades.TRUCHA_ARCOIRIS.getNombre(),AlmacenPropiedades.BESUGO.getNombre(),AlmacenPropiedades.CABALLA.getNombre(),AlmacenPropiedades.LENGUADO_EUROPEO.getNombre(),AlmacenPropiedades.LUBINA_RAYADA.getNombre(),AlmacenPropiedades.ROBALO.getNombre(),AlmacenPropiedades.CARPA_PLATEADA.getNombre(),AlmacenPropiedades.LUCIO_NORTE.getNombre(),AlmacenPropiedades.PEJERREY.getNombre(),AlmacenPropiedades.SALMON_CHINOOK.getNombre(),AlmacenPropiedades.TILAPIA_NILO.getNombre()};
+    public Estadisticas estadisticas = new Estadisticas(peixes);
 
     private AlmacenCentral almacenCentral = null;
 
@@ -101,39 +108,7 @@ public class Simulador {
                         break;
                     case 8:
                         System.out.println("Has seleccionado la Opción 8");
-                        Piscifactoria pisc = selectPisc();
-                        if (pisc instanceof  PiscifactoriaRio){
-                            boolean control = true;
-                            do{
-                                System.out.println("1.Carpa Plateada");
-                                System.out.println("2.Lucio del Norte");
-                                System.out.println("3.Pejerrey");
-                                System.out.println("4.Salmon Chinook");
-                                System.out.println("5.Tilapia Del Nilo");
-                                int seleccion = obtenerEntero();
-                                switch (seleccion) {
-                                    case 1:
-                                        addFish(new CarpaPlateada('H'),pisc);
-                                        break;
-                                    case 2:
-                                        addFish(new LucioDelNorte('H'),pisc);
-                                        break;
-                                    case 3:
-                                        addFish(new Pejerrey('H'),pisc);
-                                        break;
-                                    case 4:
-                                        addFish(new SalmonChinook('H'),pisc);
-                                        break;
-                                    case 5:
-                                        addFish(new TilapiaDelNilo('H'),pisc);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }while(control);
-                        }else{
-
-                        }
+                        comprarPeces();
                         break;
                     case 9:
                         System.out.println("Has seleccionado la Opción 9");
@@ -210,7 +185,11 @@ public class Simulador {
         List<Tanque> tanques = pisc.getTanques();
         System.out.println("--------------------------- Tanques ---------------------------");
         for (Tanque tanque : tanques) {
-            System.out.println(tanque.getNumeroTanque() + ".-" + tanque.getPeces().getClass());
+            if (tanque.getPeces().isEmpty()){
+                System.out.println(tanque.getNumeroTanque() + ".-" + "Vacio");
+            }else {
+                System.out.println(tanque.getNumeroTanque() + ".-" + tanque.getPeces().get(0).pecesDatos.getNombre());
+            }
         }
         System.out.println("Selecciona una Tanque: ");
     }
@@ -340,9 +319,25 @@ public class Simulador {
 
     public void addFish(Pez pez ,Piscifactoria piscifactoria){
         if(piscifactoria instanceof PiscifactoriaRio){
-            ((PiscifactoriaRio) piscifactoria).addFish(pez);
+            boolean resultado =((PiscifactoriaRio) piscifactoria).addFish(pez);
+            if (resultado){
+                estadisticas.registrarNacimiento(pez.pecesDatos.getNombre());
+                System.out.println("Añadido correctamente");
+                System.out.println("---------------------------------------");
+            }else {
+                System.out.println("No se a añadido porque no hay espacio");
+                System.out.println("---------------------------------------");
+            }
         }else {
-            ((PiscifactoriaMar) piscifactoria).addFish(pez);
+            boolean resultado = ((PiscifactoriaMar) piscifactoria).addFish(pez);
+            if (resultado){
+                estadisticas.registrarNacimiento(pez.pecesDatos.getNombre());
+                System.out.println("Añadido correctamente");
+                System.out.println("---------------------------------------");
+            }else {
+                System.out.println("No se a añadido porque no hay espacio");
+                System.out.println("---------------------------------------");
+            }
         }
     }
 
@@ -555,6 +550,94 @@ public class Simulador {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public void comprarPeces(){
+        Piscifactoria pisc = selectPisc();
+        if (pisc instanceof  PiscifactoriaRio){
+            boolean control = true;
+            do{
+                System.out.println("1.Carpa Plateada");
+                System.out.println("2.Lucio del Norte");
+                System.out.println("3.Pejerrey");
+                System.out.println("4.Salmon Chinook");
+                System.out.println("5.Tilapia Del Nilo");
+                System.out.println("6.Salmon Atlantico");
+                System.out.println("7.Trucha Arcoiris");
+                System.out.println("8.Cancelar");
+                int seleccion = obtenerEntero();
+                switch (seleccion) {
+                    case 1:
+                        addFish(new CarpaPlateada('H'),pisc);
+                        break;
+                    case 2:
+                        addFish(new LucioDelNorte('H'),pisc);
+                        break;
+                    case 3:
+                        addFish(new Pejerrey('H'),pisc);
+                        break;
+                    case 4:
+                        addFish(new SalmonChinook('H'),pisc);
+                        break;
+                    case 5:
+                        addFish(new TilapiaDelNilo('H'),pisc);
+                        break;
+                    case 6:
+                        addFish(new SalmonAtlantico('H'),pisc);
+                        break;
+                    case 7:
+                        addFish(new TruchaArcoiris('H'),pisc);
+                        break;
+                    case 8:
+                        control = false;
+                        break;
+                    default:
+                        System.out.println("No has elegido una opción válida");
+                        break;
+                }
+            }while(control);
+        }else{
+            boolean control = true;
+            do{
+                System.out.println("1.Besugo");
+                System.out.println("2.Caballa");
+                System.out.println("3.Lenguado Europeo");
+                System.out.println("4.Lubina Rayada");
+                System.out.println("5.Robalo");
+                System.out.println("6.Salmon Atlantico");
+                System.out.println("7.Trucha Arcoiris");
+                System.out.println("8.Cancelar");
+                int seleccion = obtenerEntero();
+                switch (seleccion) {
+                    case 1:
+                        addFish(new Besugo('H'),pisc);
+                        break;
+                    case 2:
+                        addFish(new Caballa('H'),pisc);
+                        break;
+                    case 3:
+                        addFish(new LenguadoEuropeo('H'),pisc);
+                        break;
+                    case 4:
+                        addFish(new LubinaRayada('H'),pisc);
+                        break;
+                    case 5:
+                        addFish(new Robalo('H'),pisc);
+                        break;
+                    case 6:
+                        addFish(new SalmonAtlantico('H'),pisc);
+                        break;
+                    case 7:
+                        addFish(new TruchaArcoiris('H'),pisc);
+                        break;
+                    case 8:
+                        control = false;
+                        break;
+                    default:
+                        System.out.println("No has elegido una opción válida");
+                        break;
+                }
+            }while(control);
         }
     }
 

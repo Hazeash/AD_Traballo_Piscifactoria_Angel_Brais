@@ -24,18 +24,32 @@ public class PiscifactoriaRio extends Piscifactoria {
         this.comidaMax += 25;
         System.out.println("Almacén de comida de la piscifactoría "+ getNombre() +" mejorado. Su capacidad ha aumentado en 25 hasta un total de " + this.comidaMax);
     }
-    public void addFish(Pez pez){
+    public boolean addFish(Pez pez){
+        boolean añadido = false;
         for (Tanque tanque:getTanques()) {
-            if(tanque.getPeces().size() < 25){
+            if (añadido){
+                break;
+            }
+            if(!tanque.getPeces().isEmpty()){
+                if(tanque.getPeces().size() < 25 && tanque.getPeces().get(0).getClass() == pez.getClass() ){
+                    try {
+                        tanque.addFish(pez);
+                        añadido = true;
+                    }catch (Exception e){
+                        //TODO AÑDIR MENSAJE DE ERROR EN CASO DE FALLO
+                        e.printStackTrace();
+                    }
+                }
+            }else{
                 try {
                     tanque.addFish(pez);
+                    añadido = true;
                 }catch (Exception e){
                     //TODO AÑDIR MENSAJE DE ERROR EN CASO DE FALLO
                     e.printStackTrace();
                 }
-
             }
-
         }
+        return añadido;
     }
 }

@@ -11,7 +11,7 @@ public abstract class Pez implements IPezMar, IPezRio {
     protected boolean alimentado = false;
     protected boolean adulto;
     protected int ultimaPuesta;
-    protected PecesDatos pecesDatos;
+    public PecesDatos pecesDatos;
 
     public Pez(PecesDatos datos, char sexo) {
         this.sexo = sexo;

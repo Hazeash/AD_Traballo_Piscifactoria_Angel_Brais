@@ -149,20 +149,17 @@ public abstract class Piscifactoria {
     public void comprarCinco(Cartera cartera) {
 
         if (this.comidaActual != this.comidaMax) {
-            if (cartera.getDinero() >= this.comidaMax - this.comidaActual) {
-                if (this.comidaMax - this.comidaActual < 5) {
-                    this.comidaActual += (this.comidaMax - this.comidaActual);
-                    cartera.setDinero(cartera.getDinero() - this.comidaMax - this.comidaActual);
+            if (this.comidaMax - this.comidaActual < 5) {
+                if (cartera.comprar(this.comidaMax - this.comidaActual)) {
                     System.out.println("Añadida: " + (this.comidaMax - this.comidaActual) + " de comida :D" );
-                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
-                } else {
-                    this.comidaActual += 5;
-                    cartera.setDinero(cartera.getDinero() - 5);
-                    System.out.println("Añadida: 5 de comida :D" );
                     System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
                 }
             } else {
-                System.out.println("No tienes suficiente dinero :(");
+                if (cartera.comprar(5)) {
+                    this.comidaActual += 5;
+                    System.out.println("Añadida: 5 de comida :D" );
+                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
+                }
             }
         } else {
             System.out.println("Ya has alcanzado la cantidad máxima de comida.");

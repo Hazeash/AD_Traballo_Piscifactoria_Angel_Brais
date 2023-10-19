@@ -52,8 +52,10 @@ public class Simulador {
     public void menu() {    // Menú principal
         try {
             int opcion;
+            boolean control = true;
             do {
                 System.out.println("---- Menú ----");
+                System.out.println(cartera.toString());
                 System.out.println("1. Estado general");
                 System.out.println("2. Estado piscifactoría");
                 System.out.println("3. Estado tanques");
@@ -153,13 +155,19 @@ public class Simulador {
                         break;
                     case 14:
                         System.out.println("Saliendo del programa...");
-                        System.exit(0);
+                        control = false;
+                        break;
+                    case 98:
+
+                        break;
+                    case 99:
+                        cartera.vender(1000);
                         break;
                     default:
                         System.out.println("Opción no válida. Por favor, elija una opción del 1 al 14.");
                         break;
                 }
-            } while (opcion >= 1 && opcion <= 14);
+            } while (control);
         } finally {
             try {
                 scanner.close();
@@ -298,6 +306,7 @@ public class Simulador {
             do {
 
                 System.out.println("¿Cuanta comida quieres comprar?: ");
+                System.out.println(cartera.toString());
                 System.out.println("1.- Comprar 5: ");
                 System.out.println("2.- Comprar 10: ");
                 System.out.println("3.- Comprar 25: ");
@@ -380,6 +389,7 @@ public class Simulador {
                             case 1:
                                 boolean control_2 = true;
                                 do {
+                                    System.out.println(cartera.toString());
                                     System.out.println("1.- Piscifactoria de río: ");
                                     System.out.println("2.- Piscifactoria de mar: ");
                                     System.out.println("3.- Volver: ");
@@ -399,28 +409,17 @@ public class Simulador {
 
                                     switch (eleccion_2) {
                                         case 1:
-
-                                            if (cartera.getDinero() >= 500 * rio) {
-
-                                                System.out.println("Como quieres llamar a la piscifactoría: ");
-                                                String nombre = scanner.nextLine();
-                                                cartera.setDinero(cartera.getDinero() - 500 * rio);
+                                            if (cartera.comprar(500 * rio)) {
+                                                System.out.print("Como quieres llamar a la piscifactoría: ");
+                                                String nombre = scanner.next();
                                                 piscifactorias.add(new PiscifactoriaRio(nombre));
-
-                                            } else {
-                                                System.out.println("No tiene suficiente dinero :c");
                                             }
                                             break;
                                         case 2:
-                                            if (cartera.getDinero() >= 500 * mar) {
-
-                                                System.out.println("Como quieres llamar a la piscifactoría: ");
-                                                String nombre = scanner.nextLine();
-                                                cartera.setDinero(cartera.getDinero() - 500 * mar);
+                                            if (cartera.comprar(500 * mar)) {
+                                                System.out.print("Como quieres llamar a la piscifactoría: ");
+                                                String nombre = scanner.next();
                                                 piscifactorias.add(new PiscifactoriaMar(nombre));
-
-                                            } else {
-                                                System.out.println("No tiene suficiente dinero :c");
                                             }
                                             break;
                                         case 3:
@@ -435,11 +434,8 @@ public class Simulador {
                                 break;
                             case 2:
                                 if (almacenCentral == null) {
-                                    if (cartera.getDinero() >= 2000) {
+                                    if (cartera.comprar(2000)) {
                                         almacenCentral = new AlmacenCentral();
-                                        cartera.setDinero(cartera.getDinero() - 2000);
-                                    } else {
-                                        System.out.println("No tiene suficiente dinero :c");
                                     }
                                 } else {
                                     System.out.println("Ya tienes el almacén central :/");
@@ -452,21 +448,93 @@ public class Simulador {
                     } while (control_1);
                     break;
                 case 2:
+                    boolean control_2 = true;
+                    do {
+                        System.out.println(cartera.toString());
+                        System.out.println("1.- Piscifactoria: ");
+                        System.out.println("2.- Almacén central (Necesitaras 100 monedas): ");
+                        System.out.println("3.- Volver: ");
 
+                        eleccion = obtenerEntero();
 
+                        switch (eleccion) {
 
+                            case 1:
+                                boolean control_4 = true;
+                                do {
+                                    System.out.println(cartera.toString());
+                                    System.out.println("1.- Comprar tanque: ");
+                                    System.out.println("2.- Aumentar almacén de comida: ");
+                                    System.out.println("3.- Volver: ");
 
+                                    int rio = 0;
+                                    int mar = 0;
 
+                                    for (Piscifactoria pisc: piscifactorias) {
+                                        if (pisc instanceof PiscifactoriaRio) {
+                                            rio++;
+                                        } else {
+                                            mar++;
+                                        }
+                                    }
 
+                                    int eleccion_2 = obtenerEntero();
 
+                                    switch (eleccion_2) {
+                                        case 1:
+                                            Piscifactoria piscifactoria = selectPisc();
+                                            if (piscifactoria.getTanques().size() < 10) {
+                                                if (piscifactoria instanceof PiscifactoriaRio) {
+                                                    if (piscifactoria.getTanques().isEmpty()) {
+                                                        if (cartera.comprar(150)) {
+                                                            piscifactoria.addTank();
+                                                        }
+                                                    }else {
+                                                        if (cartera.comprar(piscifactoria.getTanques().size() * 150)) {
+                                                            piscifactoria.addTank();
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (piscifactoria.getTanques().isEmpty()) {
+                                                        if (cartera.comprar(600)) {
+                                                            piscifactoria.addTank();
+                                                        }
+                                                    }else {
+                                                        if (cartera.comprar(piscifactoria.getTanques().size() * 600)) {
+                                                            piscifactoria.addTank();
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                System.out.println("Ya tienes la máxima capacidad :c");
+                                            }
+                                            break;
+                                        case 2:
+                                            break;
+                                        case 3:
+                                            control_4 = false;
+                                            break;
+                                    }
+                                } while (control_4);
+                                break;
+                            case 2:
+                                if (almacenCentral != null) {
+                                    if (cartera.getDinero() >= 100) {
+                                        almacenCentral.setCapacidad(almacenCentral.getCapacidad() + 50);
+                                        cartera.setDinero(cartera.getDinero() - 100);
 
-
-
-
-
-
-
-
+                                    } else {
+                                        System.out.println("No tiene suficiente dinero :c");
+                                    }
+                                } else {
+                                    System.out.println("Primero tienes que comprar el almacen central :(");
+                                }
+                                break;
+                            case 3:
+                                control_2 = false;
+                                break;
+                        }
+                    } while (control_2);
                     break;
                 case 3:
                     control = false;
@@ -474,10 +542,6 @@ public class Simulador {
             }
 
         } while (control);
-    }
-
-    public void comprarEdificios() {
-
     }
 
     public void contador() {

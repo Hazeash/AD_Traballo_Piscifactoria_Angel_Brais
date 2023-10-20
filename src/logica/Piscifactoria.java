@@ -185,20 +185,17 @@ public abstract class Piscifactoria {
     public void comprarDiez(Cartera cartera) {
 
         if (this.comidaActual != this.comidaMax) {
-            if (cartera.getDinero() >= this.comidaMax - this.comidaActual) {
-                if (this.comidaMax - this.comidaActual < 10) {
-                    this.comidaActual += (this.comidaMax - this.comidaActual);
-                    cartera.setDinero(cartera.getDinero() - this.comidaMax - this.comidaActual);
+            if (this.comidaMax - this.comidaActual < 10) {
+                if (cartera.comprar(this.comidaMax - this.comidaActual)) {
                     System.out.println("Añadida: " + (this.comidaMax - this.comidaActual) + " de comida :D" );
-                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
-                } else {
-                    this.comidaActual += 10;
-                    cartera.setDinero(cartera.getDinero() - 10);
-                    System.out.println("Añadida: 10 de comida :D" );
                     System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
                 }
             } else {
-                System.out.println("No tienes suficiente dinero :(");
+                if (cartera.comprar(10)) {
+                    this.comidaActual += 10;
+                    System.out.println("Añadida: 10 de comida :D" );
+                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
+                }
             }
         } else {
             System.out.println("Ya has alcanzado la cantidad máxima de comida.");
@@ -208,20 +205,17 @@ public abstract class Piscifactoria {
     public void comprarVeintiCinco(Cartera cartera) {
 
         if (this.comidaActual != this.comidaMax) {
-            if (cartera.getDinero() >= this.comidaMax - this.comidaActual) {
-                if (this.comidaMax - this.comidaActual < 25) {
-                    this.comidaActual += (this.comidaMax - this.comidaActual);
-                    cartera.setDinero(cartera.getDinero() - this.comidaMax - this.comidaActual);
+            if (this.comidaMax - this.comidaActual < 25) {
+                if (cartera.comprar(this.comidaMax - this.comidaActual)) {
                     System.out.println("Añadida: " + (this.comidaMax - this.comidaActual) + " de comida :D" );
-                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
-                } else {
-                    this.comidaActual += 25;
-                    cartera.setDinero(cartera.getDinero() - 20);
-                    System.out.println("Añadida: 25 de comida :D" );
                     System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
                 }
             } else {
-                System.out.println("No tienes suficiente dinero :(");
+                if (cartera.comprar(20)) {
+                    this.comidaActual += 25;
+                    System.out.println("Añadida: 25 de comida :D" );
+                    System.out.println("Depósito de comida de la piscifactoría " + this.nombre + " al " + (this.comidaActual*100)/this.comidaMax + "% de su capacidad." + " ["+ this.comidaActual + "/"+ this.comidaMax+ "]");
+                }
             }
         } else {
             System.out.println("Ya has alcanzado la cantidad máxima de comida.");
@@ -267,4 +261,3 @@ public abstract class Piscifactoria {
 
     }
 }
-

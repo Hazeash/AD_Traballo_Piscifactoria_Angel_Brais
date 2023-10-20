@@ -76,11 +76,15 @@ public class Simulador {
                 System.out.println("11. Vaciar tanque");
                 System.out.println("12. Mejorar");
                 System.out.println("13. Pasar varios días");
-                System.out.println("14. Salir");
+                System.out.println("0. Salir");
 
                 opcion = obtenerEntero();
 
                 switch (opcion) {
+                    case 0:
+                        System.out.println("Saliendo del programa...");
+                        control = false;
+                        break;
                     case 1:
                         System.out.println("Has seleccionado la Opción 1");
                         showGeneralStatus();
@@ -128,10 +132,6 @@ public class Simulador {
                         break;
                     case 13:
                         System.out.println("Has seleccionado la Opción 13");
-                        break;
-                    case 14:
-                        System.out.println("Saliendo del programa...");
-                        control = false;
                         break;
                     case 98:
 
@@ -378,7 +378,7 @@ public class Simulador {
             System.out.println("¿Qué quieres mejorar?: ");
             System.out.println("1.- Comprar edificios: ");
             System.out.println("2.- Mejorar edificios: ");
-            System.out.println("3.- Cancelar: ");
+            System.out.println("0.- Cancelar: ");
 
             int eleccion = obtenerEntero();
 
@@ -389,18 +389,21 @@ public class Simulador {
                     do {
                         System.out.println("1.- Piscifactoria: ");
                         System.out.println("2.- Almacén central: ");
-                        System.out.println("3.- Volver: ");
+                        System.out.println("0.- Volver: ");
 
                         int eleccion_1 = obtenerEntero();
 
                         switch (eleccion_1) {
+                            case 0:
+                                control_1 = false;
+                                break;
                             case 1:
                                 boolean control_2 = true;
                                 do {
                                     System.out.println(cartera.toString());
                                     System.out.println("1.- Piscifactoria de río: ");
                                     System.out.println("2.- Piscifactoria de mar: ");
-                                    System.out.println("3.- Volver: ");
+                                    System.out.println("0.- Volver: ");
 
                                     int rio = 0;
                                     int mar = 0;
@@ -416,6 +419,9 @@ public class Simulador {
                                     int eleccion_2 = obtenerEntero();
 
                                     switch (eleccion_2) {
+                                        case 0:
+                                            control_2 = false;
+                                            break;
                                         case 1:
                                             if (cartera.comprar(500 * rio)) {
                                                 System.out.print("Como quieres llamar a la piscifactoría: ");
@@ -429,9 +435,6 @@ public class Simulador {
                                                 String nombre = scanner.next();
                                                 piscifactorias.add(new PiscifactoriaMar(nombre));
                                             }
-                                            break;
-                                        case 3:
-                                            control_2 = false;
                                             break;
                                         default:
                                             System.out.println("No has seleccionado una opción válida :(");
@@ -449,9 +452,6 @@ public class Simulador {
                                     System.out.println("Ya tienes el almacén central :/");
                                 }
                                 break;
-                            case 3:
-                                control_1 = false;
-                                break;
                         }
                     } while (control_1);
                     break;
@@ -461,19 +461,22 @@ public class Simulador {
                         System.out.println(cartera.toString());
                         System.out.println("1.- Piscifactoria: ");
                         System.out.println("2.- Almacén central (Necesitaras 100 monedas): ");
-                        System.out.println("3.- Volver: ");
+                        System.out.println("0.- Volver: ");
 
                         eleccion = obtenerEntero();
 
                         switch (eleccion) {
 
+                            case 0:
+                                control_2 = false;
+                                break;
                             case 1:
                                 boolean control_4 = true;
                                 do {
                                     System.out.println(cartera.toString());
                                     System.out.println("1.- Comprar tanque: ");
                                     System.out.println("2.- Aumentar almacén de comida: ");
-                                    System.out.println("3.- Volver: ");
+                                    System.out.println("0.- Volver: ");
 
                                     int rio = 0;
                                     int mar = 0;
@@ -489,6 +492,9 @@ public class Simulador {
                                     int eleccion_2 = obtenerEntero();
 
                                     switch (eleccion_2) {
+                                        case 0:
+                                            control_4 = false;
+                                            break;
                                         case 1:
                                             Piscifactoria piscifactoria = selectPisc();
                                             if (piscifactoria.getTanques().size() < 10) {
@@ -518,9 +524,24 @@ public class Simulador {
                                             }
                                             break;
                                         case 2:
-                                            break;
-                                        case 3:
-                                            control_4 = false;
+                                            Piscifactoria piscifactoria_2 = selectPisc();
+                                            if (piscifactoria_2 instanceof PiscifactoriaRio) {
+                                                if (piscifactoria_2.getComidaMax() < 250) {
+                                                   if (cartera.comprar(100)) {
+                                                       piscifactoria_2.setComidaMax(piscifactoria_2.getComidaMax() + 25);
+                                                   }
+                                                } else {
+                                                    System.out.println("Ya tienes la máxima capacidad :c");
+                                                }
+                                            } else {
+                                                if (piscifactoria_2.getComidaMax() < 1000) {
+                                                    if (cartera.comprar(200)) {
+                                                        piscifactoria_2.setComidaMax(piscifactoria_2.getComidaMax() + 100);
+                                                    }
+                                                } else {
+                                                    System.out.println("Ya tienes la máxima capacidad :c");
+                                                }
+                                            }
                                             break;
                                     }
                                 } while (control_4);
@@ -538,9 +559,6 @@ public class Simulador {
                                     System.out.println("Primero tienes que comprar el almacen central :(");
                                 }
                                 break;
-                            case 3:
-                                control_2 = false;
-                                break;
                         }
                     } while (control_2);
                     break;
@@ -552,19 +570,6 @@ public class Simulador {
         } while (control);
     }
 
-    public void contador() {
-
-        int segundos = 5;
-
-        for (int i = segundos; i > 0; i--) {
-            System.out.println("Regresando al menú en: " + i);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public void comprarPeces(){
         Piscifactoria pisc = selectPisc();
         if (pisc instanceof  PiscifactoriaRio){

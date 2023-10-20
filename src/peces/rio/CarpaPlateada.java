@@ -10,4 +10,5 @@ public class CarpaPlateada extends Filtrador implements IPezRio {
     public CarpaPlateada(char sexo) {
         super(AlmacenPropiedades.CARPA_PLATEADA, sexo);
     }
+
 }

@@ -7,6 +7,7 @@ import peces.ambos.TruchaArcoiris;
 import peces.mar.*;
 import peces.rio.*;
 import propiedades.AlmacenPropiedades;
+import propiedades.PecesDatos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class Simulador {
                         break;
                     case 2:
                         System.out.println("Has seleccionado la Opción 2");
-                        menuPisc();
+                        showSpecificStatus();
                         break;
                     case 3:
                         System.out.println("Has seleccionado la Opción 3");
@@ -106,9 +107,11 @@ public class Simulador {
                         showIctio();
                         break;
                     case 6:
+                        System.out.println("Has seleccionado la Opción 6");
                         nextDay();
                         break;
                     case 7:
+                        System.out.println("Has seleccionado la Opción 7");
                         addFood();
                         break;
                     case 8:
@@ -132,6 +135,11 @@ public class Simulador {
                         break;
                     case 13:
                         System.out.println("Has seleccionado la Opción 13");
+                        System.out.println("Cuantos dias quieres pasar :");
+                        int dias = obtenerEntero();
+                        for (int i = 0;i<dias;i++){
+                            nextDay();
+                        }
                         break;
                     case 98:
 
@@ -262,21 +270,81 @@ public class Simulador {
 
     public void showIctio() {
         //TODO ESTO TEN QUE ELGIR UNHA CLASE DE PEIXE E MOSTRAR OS DATOS DESTA CLASE , DAS QUE IMPLEMENTEMOS
+        boolean control = true;
+        do{
+            System.out.println("Elige un pez para ver sus datos");
+            System.out.println("--------RIO-------");
+            System.out.println("1.Carpa Plateada");
+            System.out.println("2.Lucio del Norte");
+            System.out.println("3.Pejerrey");
+            System.out.println("4.Salmon Chinook");
+            System.out.println("5.Tilapia Del Nilo");
+            System.out.println("-------MAR---------");
+            System.out.println("6.Besugo");
+            System.out.println("7.Caballa");
+            System.out.println("8.Lenguado Europeo");
+            System.out.println("9.Lubina Rayada");
+            System.out.println("10.Robalo");
+            System.out.println("-------RIO Y MAR-------");
+            System.out.println("11.Salmon Atlantico");
+            System.out.println("12.Trucha Arcoiris");
+            System.out.println("0.Salir");
+
+            int seleccion = obtenerEntero();
+
+            switch (seleccion){
+                case 0:
+                    control = false;
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+                case 12:
+                    break;
+
+
+            }
+
+        }while (control);
+
+
     }
 
     public void nextDay() {
         int vendidos = 0;
         int monedas = 0;
+        System.out.println("DIA " +dia);
         for (Piscifactoria prio : piscifactorias) {
             int[] datos =prio.nextDay(this);
             vendidos += datos[0];
             monedas += datos[1];
         }
         if (vendidos !=0){
+            System.out.println("Ventas Totales");
             System.out.println(vendidos +" peces vendidos por un total de "+ monedas+" monedas");
             cartera.vender(monedas);
         }
-
+        dia++;
     }
 
     public void addFood() {

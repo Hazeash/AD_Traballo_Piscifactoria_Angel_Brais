@@ -112,7 +112,9 @@ public class Tanque {
             for (Pez pez: hembras) {
                 if(pez.esFertil()){
                     try {
-                        nuevaCria(estadisticas);
+                        for (int i = 0; i < pez.pecesDatos.getHuevos();i++){
+                            nuevaCria(estadisticas);
+                        }
                         pez.reproducirse();
                     }catch (NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException e){
                         e.printStackTrace();
@@ -183,8 +185,6 @@ public class Tanque {
     }
 
     public int sellFish(Estadisticas estadisticas){
-        // A MARAVILLOSA LOGICA DE JAVA DICTAMINA QUE NON SE PODE ELIMINAR OBJETOS DUN ARRAYLIST MENTRES ITERAS
-        // ASI QUE HAI QUE USAR UN ARRAYLIST TEMPORAL E BORRALOS TODOS A VEZ
         ArrayList<Pez> borrados = new ArrayList<>();
         int vendidos = 0;
         for (Pez pez: peces) {
@@ -200,8 +200,6 @@ public class Tanque {
         return vendidos;
     }
     public void cleanTank(){
-        // A MARAVILLOSA LOGICA DE JAVA DICTAMINA QUE NON SE PODE ELIMINAR OBJETOS DUN ARRAYLIST MENTRES ITERAS
-        // ASI QUE HAI QUE USAR UN ARRAYLIST TEMPORAL E BORRALOS TODOS A VEZ
         ArrayList<Pez> borrados = new ArrayList<>();
         for (Pez pez :peces) {
             if (!pez.estaVivo()){

@@ -47,7 +47,7 @@ public abstract class Piscifactoria {
             for (int i = 0; i < datosTanque.length; i++) {
                 arrDatosConjunto[i] += datosTanque[i];
             }
-            capacidadMax += capacidadMax;
+            capacidadMax += tanque.capacidadMaxima;
         }
         if(arrDatosConjunto[0] == 0){
             System.out.println("=============== " + nombre + " ===============");
@@ -87,7 +87,9 @@ public abstract class Piscifactoria {
     public void showFood(){
         System.out.println("Depósito de comida de la piscifactoría"+ getNombre()+ " al " + ((comidaActual *100 )/ comidaMax) + " de su capacidad. [" + comidaActual+" / " + comidaMax +"]");
     }
-    public void nextDay(Simulador simulador){
+    public int[] nextDay(Simulador simulador){
+        int vendidos = 0;
+        int monedas = 0;
         if(simulador.getAlmacenCentral() != null){
             for (Tanque tanque : tanques) {
                 if (tanque.getPeces().size() > comidaActual){
@@ -103,13 +105,22 @@ public abstract class Piscifactoria {
                         }
                     }
                 }
-                tanque.nextDay(this,simulador.estadisticas);
+                vendidos += tanque.nextDay(this,simulador.estadisticas);
+                monedas += (vendidos * tanque.getPeces().get(0).pecesDatos.getMonedas());
             }
         }else {
             for (Tanque tanque :tanques) {
-                tanque.nextDay(this,simulador.estadisticas);
+                vendidos += tanque.nextDay(this,simulador.estadisticas);
+                monedas += (vendidos * tanque.getPeces().get(0).pecesDatos.getMonedas());
             }
         }
+        int[] datos = {0,0};
+        if(vendidos != 0){
+            System.out.println("Piscifactoría "+ this.nombre+" : "+vendidos+" peces vendidos por "+monedas+" monedas");
+            datos[0] = vendidos;
+            datos[1] = monedas;
+        }
+        return datos;
     }
     public void cleanTank(){
         for (Tanque tanque :tanques) {

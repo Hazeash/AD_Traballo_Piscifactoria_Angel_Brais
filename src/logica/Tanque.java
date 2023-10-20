@@ -87,12 +87,12 @@ public class Tanque {
         System.out.println("Tanque " + numeroTanque + " de la piscifactoría"+ piscifactoria.getNombre() + " al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " /" + capacidadMaxima + "]");
     }
 
-    public void nextDay(Piscifactoria piscifactoria,Estadisticas estadisticas) {
+    public int nextDay(Piscifactoria piscifactoria,Estadisticas estadisticas) {
         for (Pez pez : peces) {
             pez.grow(piscifactoria);
         }
         reproducir(estadisticas);
-        sellFish(estadisticas);
+        return sellFish(estadisticas);
     }
     public void reproducir(Estadisticas estadisticas){
         ArrayList<Pez> hembras = new ArrayList<>();
@@ -110,13 +110,14 @@ public class Tanque {
         }
         if (macho){
             for (Pez pez: hembras) {
-                pez.reproducirse();
-                try {
-                    nuevaCria(estadisticas);
-                }catch (NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException e){
-                    e.printStackTrace();
+                if(pez.esFertil()){
+                    try {
+                        nuevaCria(estadisticas);
+                        pez.reproducirse();
+                    }catch (NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException e){
+                        e.printStackTrace();
+                    }
                 }
-
             }
         }
     }
@@ -182,25 +183,35 @@ public class Tanque {
     }
 
     public int sellFish(Estadisticas estadisticas){
+        // A MARAVILLOSA LOGICA DE JAVA DICTAMINA QUE NON SE PODE ELIMINAR OBJETOS DUN ARRAYLIST MENTRES ITERAS
+        // ASI QUE HAI QUE USAR UN ARRAYLIST TEMPORAL E BORRALOS TODOS A VEZ
+        ArrayList<Pez> borrados = new ArrayList<>();
         int vendidos = 0;
         for (Pez pez: peces) {
             if (pez.estaVivo() && pez.esOptimo()){
-                peces.remove(pez);
+                borrados.add(pez);
                 estadisticas.registrarVenta(pez.pecesDatos.getNombre(),pez.pecesDatos.getMonedas());
                 vendidos++;
             }
         }
+        if (!borrados.isEmpty()){
+            peces.removeAll(borrados);
+        }
         return vendidos;
     }
     public void cleanTank(){
+        // A MARAVILLOSA LOGICA DE JAVA DICTAMINA QUE NON SE PODE ELIMINAR OBJETOS DUN ARRAYLIST MENTRES ITERAS
+        // ASI QUE HAI QUE USAR UN ARRAYLIST TEMPORAL E BORRALOS TODOS A VEZ
+        ArrayList<Pez> borrados = new ArrayList<>();
         for (Pez pez :peces) {
             if (!pez.estaVivo()){
-                peces.remove(pez);
+                borrados.add(pez);
             }
         }
+        peces.removeAll(borrados);
     }
     public void emptyTank(){
-        peces = new ArrayList<Pez>();
+        peces.clear();
     }
 
     public int getCapacidadMaxima() {

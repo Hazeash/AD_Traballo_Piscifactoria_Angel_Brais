@@ -95,6 +95,7 @@ public class Simulador {
                         break;
                     case 4:
                         System.out.println("Has seleccionado la Opción 4");
+                        showStats();
                         break;
                     case 5:
                         System.out.println("Has seleccionado la Opción 5");
@@ -255,7 +256,7 @@ public class Simulador {
     }
 
     public void showStats() {
-        //TODO ESTO DEVOLVEO ORCA.ESTADISTICAS ASI QUE HAI QUE IMPLEMENTAR TODOS OS METODOS DESO ANTES DESTE
+        estadisticas.mostrar();
 
     }
 
@@ -264,11 +265,18 @@ public class Simulador {
     }
 
     public void nextDay() {
-        for (Piscifactoria pisci:piscifactorias) {
-            pisci.nextDay(this);
-
+        int vendidos = 0;
+        int monedas = 0;
+        for (Piscifactoria prio : piscifactorias) {
+            int[] datos =prio.nextDay(this);
+            vendidos += datos[0];
+            monedas += datos[1];
         }
-        //TODO MOSTRAR DATOS PECES VENDIDOS
+        if (vendidos !=0){
+            System.out.println(vendidos +" peces vendidos por un total de "+ monedas+" monedas");
+            cartera.vender(monedas);
+        }
+
     }
 
     public void addFood() {

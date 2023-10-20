@@ -1,5 +1,7 @@
 package logica;
 
+import estadisticas.Estadisticas;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -85,50 +87,40 @@ public class Tanque {
         System.out.println("Tanque " + numeroTanque + " de la piscifactoría"+ piscifactoria.getNombre() + " al " + porcentajeOcupado + "% de capacidad. [" + ocupacion + " /" + capacidadMaxima + "]");
     }
 
-    public void nextDay(Piscifactoria piscifactoria) {
+    public void nextDay(Piscifactoria piscifactoria,Estadisticas estadisticas) {
         for (Pez pez : peces) {
             pez.grow(piscifactoria);
         }
-        reproducir();
-        sellFish();
+        reproducir(estadisticas);
+        sellFish(estadisticas);
     }
-    public void reproducir(){
-        ArrayList<Pez> machos= new ArrayList<>();
-        ArrayList<Pez> hembras= new ArrayList<>();
-        for (Pez pez : peces) {
-            if (pez.estaVivo()){
-                if (pez.getSexo() == 'M'){
-                    machos.add(pez);
-                }else {
-                    hembras.add(pez);
-                }
-            }
-        }
+    public void reproducir(Estadisticas estadisticas){
+        ArrayList<Pez> hembras = new ArrayList<>();
+        boolean macho = false;
         //Recorre todos os machos e si topa femia fertil reproduce.
-        for (Pez macho :machos) {
-            if (macho.esFertil()){
-                for (int i =0;i< hembras.size();i++) {
-                    if (hembras.get(i).esFertil()){
-                      i= hembras.size();
-                        try{
-                            macho.reproducirse();
-                            hembras.get(i).reproducirse();
-                            nuevaCria();
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
+        for (Pez pez :peces) {
+            if(pez.getSexo() == 'H'){
+                    hembras.add(pez);
+            }else{
+               if(pez.esFertil()){
+                   macho = true;
+               }
             }
-            //Comprobar si el macho sigue siendo fertil , lo que significa que no hay hembras fertiles en el tanque , por lo cual no se comprueba con el resto de machos.
-            if(macho.esFertil()){
-                break;
+
+        }
+        if (macho){
+            for (Pez pez: hembras) {
+                pez.reproducirse();
+                try {
+                    nuevaCria(estadisticas);
+                }catch (NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException e){
+                    e.printStackTrace();
+                }
+
             }
         }
     }
-    public void nuevaCria() throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
+    public void nuevaCria(Estadisticas estadisticas) throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
         Class<? extends Pez> tipoPez = peces.get(0).getClass();
         ArrayList<Pez> machos = new ArrayList<>();
         ArrayList<Pez> hembras = new ArrayList<>();
@@ -146,8 +138,7 @@ public class Tanque {
             nuevoPez = tipoPez.getDeclaredConstructor(char.class).newInstance('M');
         }
             peces.add(nuevoPez);
-        //TODO AÑADIR REGISTRO NACIMIENTO ORCA.LIB
-
+            estadisticas.registrarNacimiento(nuevoPez.pecesDatos.getNombre());
     }
     public boolean addFish(Pez pez) throws NoSuchMethodException,InstantiationException,IllegalAccessException, InvocationTargetException {
         ArrayList<Pez> machos = new ArrayList<>();
@@ -176,7 +167,6 @@ public class Tanque {
             peces = new ArrayList<Pez>();
             Pez nuevoPez = pez.getClass().getDeclaredConstructor(char.class).newInstance('H');
             peces.add(nuevoPez);
-            //TODO AÑADIR REGISTRO COMPRA PEZ ORCA.LIB
             return true;
         }
     }
@@ -191,14 +181,16 @@ public class Tanque {
         return vivos;
     }
 
-    public void sellFish(){
+    public int sellFish(Estadisticas estadisticas){
+        int vendidos = 0;
         for (Pez pez: peces) {
-            if (pez.estaVivo() && pez.esAdulto()){
+            if (pez.estaVivo() && pez.esOptimo()){
                 peces.remove(pez);
-                //TODO AÑADIR METODO REGISTRO VENTA ORCA.LIB
-                //TODO AÑADIR MONEDAS, MOSTRAR TODOS LOS PECES VENDIDOS
+                estadisticas.registrarVenta(pez.pecesDatos.getNombre(),pez.pecesDatos.getMonedas());
+                vendidos++;
             }
         }
+        return vendidos;
     }
     public void cleanTank(){
         for (Pez pez :peces) {

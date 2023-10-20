@@ -32,6 +32,8 @@ public class Cartera {
 
     @Override
     public String toString() {
-        return "Tienes: " + dinero + " monedas.";
+        return "Cartera{" +
+                "dinero=" + dinero +
+                '}';
     }
 }

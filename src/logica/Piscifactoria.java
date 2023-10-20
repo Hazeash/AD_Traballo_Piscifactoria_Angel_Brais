@@ -1,5 +1,6 @@
 package logica;
 
+import estadisticas.Estadisticas;
 import simulacion.Cartera;
 import simulacion.Simulador;
 
@@ -102,7 +103,11 @@ public abstract class Piscifactoria {
                         }
                     }
                 }
-                tanque.nextDay(this);
+                tanque.nextDay(this,simulador.estadisticas);
+            }
+        }else {
+            for (Tanque tanque :tanques) {
+                tanque.nextDay(this,simulador.estadisticas);
             }
         }
     }
@@ -111,16 +116,16 @@ public abstract class Piscifactoria {
             tanque.cleanTank();
         }
     }
-    public void sellFish(Tanque tanque){
-        tanque.sellFish();
-
-    }
-    public void sellAll(){
+    public int[] sellFish( Estadisticas estadisticas){
+        int vendidos = 0;
+        int monedas = 0;
         for (Tanque tanque:tanques) {
-            tanque.sellFish();
+            vendidos += tanque.sellFish(estadisticas);
+            monedas += (vendidos * tanque.getPeces().get(0).pecesDatos.getMonedas());
         }
-
-
+        System.out.println("Piscifactoría "+ this.nombre+" : "+vendidos+" peces vendidos por "+monedas+" monedas");
+        int[] datos = {vendidos,monedas};
+        return datos;
     }
     public int contarVivos() {
         int vivos = 0;

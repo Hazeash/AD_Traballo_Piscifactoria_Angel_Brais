@@ -342,10 +342,15 @@ public class Simulador {
     }
 
     public void sell() {
+        int vendidos = 0;
+        int monedas = 0;
         for (Piscifactoria prio : piscifactorias) {
-            prio.sellAll();
+            int[] datos =prio.sellFish(estadisticas);
+            vendidos += datos[0];
+            monedas += datos[1];
         }
-
+        System.out.println(vendidos +" peces vendidos por un total de "+ monedas+" monedas");
+        cartera.vender(monedas);
     }
 
     public void cleanTank(Tanque tanque) {
@@ -568,25 +573,39 @@ public class Simulador {
                 int seleccion = obtenerEntero();
                 switch (seleccion) {
                     case 1:
-                        addFish(new CarpaPlateada('H'),pisc);
+                        if(cartera.comprar(AlmacenPropiedades.CARPA_PLATEADA.getCoste())){
+                            addFish(new CarpaPlateada('H'),pisc);
+                        }
                         break;
                     case 2:
-                        addFish(new LucioDelNorte('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.LUCIO_NORTE.getCoste())){
+                            addFish(new LucioDelNorte('H'),pisc);
+                        }
                         break;
                     case 3:
-                        addFish(new Pejerrey('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.PEJERREY.getCoste())){
+                            addFish(new Pejerrey('H'),pisc);
+                        }
                         break;
                     case 4:
-                        addFish(new SalmonChinook('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.SALMON_CHINOOK.getCoste())){
+                            addFish(new SalmonChinook('H'),pisc);
+                        }
                         break;
                     case 5:
-                        addFish(new TilapiaDelNilo('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.TILAPIA_NILO.getCoste())){
+                            addFish(new TilapiaDelNilo('H'),pisc);
+                        }
                         break;
                     case 6:
-                        addFish(new SalmonAtlantico('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.SALMON_ATLANTICO.getCoste())){
+                            addFish(new SalmonAtlantico('H'),pisc);
+                        }
                         break;
                     case 7:
-                        addFish(new TruchaArcoiris('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.TRUCHA_ARCOIRIS.getCoste())){
+                            addFish(new TruchaArcoiris('H'),pisc);
+                        }
                         break;
                     case 8:
                         control = false;
@@ -610,25 +629,39 @@ public class Simulador {
                 int seleccion = obtenerEntero();
                 switch (seleccion) {
                     case 1:
-                        addFish(new Besugo('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.BESUGO.getCoste())){
+                            addFish(new Besugo('H'),pisc);
+                        }
                         break;
                     case 2:
-                        addFish(new Caballa('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.CABALLA.getCoste())){
+                            addFish(new Caballa('H'),pisc);
+                        }
                         break;
                     case 3:
-                        addFish(new LenguadoEuropeo('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.LENGUADO_EUROPEO.getCoste())){
+                            addFish(new LenguadoEuropeo('H'),pisc);
+                        }
                         break;
                     case 4:
-                        addFish(new LubinaRayada('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.LUBINA_RAYADA.getCoste())){
+                            addFish(new LubinaRayada('H'),pisc);
+                        }
                         break;
                     case 5:
-                        addFish(new Robalo('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.ROBALO.getCoste())){
+                            addFish(new Robalo('H'),pisc);
+                        }
                         break;
                     case 6:
-                        addFish(new SalmonAtlantico('H'),pisc);
+                        if (cartera.comprar(AlmacenPropiedades.SALMON_ATLANTICO.getCoste())){
+                            addFish(new SalmonAtlantico('H'),pisc);
+                        }
                         break;
                     case 7:
-                        addFish(new TruchaArcoiris('H'),pisc);
+                        if(cartera.comprar(AlmacenPropiedades.TRUCHA_ARCOIRIS.getCoste())){
+                            addFish(new TruchaArcoiris('H'),pisc);
+                        }
                         break;
                     case 8:
                         control = false;

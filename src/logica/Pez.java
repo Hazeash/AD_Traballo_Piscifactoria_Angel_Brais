@@ -10,6 +10,7 @@ public abstract class Pez implements IPezMar, IPezRio {
     protected boolean vivo = true;
     protected boolean alimentado = false;
     protected boolean adulto;
+    protected boolean optimo;
     protected int ultimaPuesta;
     public PecesDatos pecesDatos;
 
@@ -35,10 +36,12 @@ public abstract class Pez implements IPezMar, IPezRio {
             if (edad == pecesDatos.getMadurez()){
                 adulto = true;
                 ultimaPuesta =0;
-                fertil = true;
             }
             if (ultimaPuesta ==0){
                 fertil = true;
+            }
+            if(edad == pecesDatos.getOptimo()){
+                optimo = true;
             }
         }
     }
@@ -93,4 +96,7 @@ public abstract class Pez implements IPezMar, IPezRio {
         return adulto;
     }
 
+    public boolean esOptimo() {
+        return optimo;
+    }
 }

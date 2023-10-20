@@ -17,6 +17,7 @@ public class PiscifactoriaMar extends Piscifactoria{
 
     public void addTank() {
         this.tanques.add(new Tanque(tanques.size()+1,100));
+
     }
     public void upgradeFood(){
         this.comidaMax += 100;
